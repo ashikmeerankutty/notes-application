@@ -1,7 +1,12 @@
-export default {
+import colors from './colors';
+import { Theme } from './types';
+
+const darkTheme: Theme = {
   colors: {
-    primary: '#fff',
-    background: '#000',
-    text: '#fff',
+    primary: colors.white,
+    background: colors.neutral9,
+    text: colors.white,
   },
 };
+
+export default darkTheme;

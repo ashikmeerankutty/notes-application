@@ -4,8 +4,9 @@ import { ThemeProvider } from 'emotion-theming';
 import { useLoading } from './shared/utils/loadingStates';
 import { lightTheme, darkTheme } from 'components';
 import { getBrowserTheme, THEMES } from './shared/utils/theme';
+import { Theme } from 'components';
 
-const globalStyles = (theme) => css`
+const globalStyles = (theme: Theme) => css`
   body {
     background: ${theme.colors.background};
   }
