@@ -8,6 +8,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:cypress/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -28,5 +29,5 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
   },
-  ignorePatterns: ['webpack.config.js', 'babel.config.js', '.eslintrc.js'],
+  ignorePatterns: ['webpack.config.js', 'babel.config.js', '.eslintrc.js', 'jest.config.js'],
 };
