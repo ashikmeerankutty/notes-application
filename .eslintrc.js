@@ -27,5 +27,5 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
   },
-  ignorePattern: ['webpack.config.js'],
+  ignorePatterns: ['webpack.config.js', 'babel.config.js', '.eslintrc.js'],
 };
