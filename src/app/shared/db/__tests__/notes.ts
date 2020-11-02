@@ -1,4 +1,11 @@
-import { addNote, deleteNote, getNote, getNotes, updateNote } from '../notes';
+import {
+  addNote,
+  createNewNote,
+  deleteNote,
+  getNote,
+  getNotes,
+  updateNote,
+} from '../notes';
 import { getItemFromStorage, setItemToStorage, clearStorage } from '../storage';
 import { Note } from '../types';
 
@@ -23,7 +30,7 @@ describe('Local storage', () => {
 describe('Note CRUD Operations', () => {
   const sampleNotes: Note[] = [
     {
-      id: 1,
+      id: '1',
       title: 'Test Note',
       notes: 'I am a test Note',
       archived: false,
@@ -39,8 +46,24 @@ describe('Note CRUD Operations', () => {
     expect(getItemFromStorage('notes')).toContainEqual(newNote);
   });
 
-  it('Remove a note from storage', () => {
-    const removeId: number = 1;
+  it('Create new note', () => {
+    const newNote = createNewNote(sampleNotes[0].title, sampleNotes[0].notes);
+    expect(newNote).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        title: sampleNotes[0].title,
+        notes: sampleNotes[0].notes,
+        archived: false,
+        pinned: false,
+        created: expect.any(String),
+        lastUpdated: expect.any(String),
+      })
+    );
+    expect(getItemFromStorage('notes')).toContainEqual(newNote);
+  });
+
+  it('Delete a note from storage', () => {
+    const removeId = '1';
     setItemToStorage('notes', sampleNotes);
     deleteNote(removeId);
     expect(getItemFromStorage('notes')).not.toContainEqual(
@@ -50,7 +73,7 @@ describe('Note CRUD Operations', () => {
 
   it('Update a note from storage', () => {
     const updatedNote: Note = {
-      id: 1,
+      id: '1',
       title: 'Test Updated Note',
       notes: 'I am a test Note',
       archived: false,
@@ -79,7 +102,7 @@ describe('Note CRUD Operations', () => {
   });
 
   it('Get a note from storage', () => {
-    const noteId: number = 1;
+    const noteId = '1';
     setItemToStorage('notes', sampleNotes);
     const result = getNote(noteId);
     expect(result).toEqual(sampleNotes[0]);
