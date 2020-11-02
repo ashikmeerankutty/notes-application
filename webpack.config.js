@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const path = require('path');
 
 module.exports = {
   output: {
@@ -21,6 +22,12 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      components: path.resolve(
+        __dirname,
+        './src/app/shared/components'
+      ),
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({

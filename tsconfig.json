@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/",
     "noImplicitAny": true,
     "module": "esnext",
@@ -8,6 +9,9 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "paths": {
+      "components": ["src/app/shared/components"]
+    }
   },
   "include": ["src/**/*"],
 }
