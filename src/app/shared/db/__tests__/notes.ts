@@ -99,6 +99,42 @@ describe('Note CRUD Operations', () => {
       const notes = getNotes();
       expect(notes).toEqual([]);
     });
+
+    it('returns search results given query and pagination', () => {
+      const query: string = 'test';
+      const sampleNotes: Note[] = [
+        {
+          id: '1',
+          title: 'Test Note',
+          notes: 'I am a  Note',
+          archived: false,
+          pinned: false,
+          created: new Date('10/10/2010').toString(),
+          lastUpdated: new Date('10/10/2010').toString(),
+        },
+        {
+          id: '2',
+          title: 'New Note',
+          notes: 'I am a test Note',
+          archived: false,
+          pinned: false,
+          created: new Date('10/10/2010').toString(),
+          lastUpdated: new Date('10/10/2010').toString(),
+        },
+        {
+          id: '3',
+          title: 'Non belonging Note',
+          notes: 'I am not part of the result',
+          archived: false,
+          pinned: false,
+          created: new Date('10/10/2010').toString(),
+          lastUpdated: new Date('10/10/2010').toString(),
+        },
+      ];
+      setItemToStorage('notes', sampleNotes);
+      expect(getNotes(query)).toEqual([sampleNotes[0], sampleNotes[1]]);
+      expect(getNotes('', 1, 2)).toEqual([sampleNotes[0], sampleNotes[1]]);
+    });
   });
 
   it('Get a note from storage', () => {

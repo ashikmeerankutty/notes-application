@@ -82,7 +82,7 @@ describe('Note action', () => {
       sampleNotes[0].notes
     );
     const spy = jest.spyOn(notesDb, 'getNotes');
-    expect(loadNotes('query', 1, 10)).toEqual({
+    expect(loadNotes()).toEqual({
       type: LOAD_NOTES,
       notes: [newNote],
     });
