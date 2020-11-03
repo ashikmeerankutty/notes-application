@@ -17,7 +17,7 @@ export const deleteNote = (noteId: string) => {
   return { type: DELETE_NOTE, noteId };
 };
 
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const loadNotes = (query: string, page: number, pageSize: number) => {
   const notes = notesDb.getNotes();
   return { type: LOAD_NOTES, notes };

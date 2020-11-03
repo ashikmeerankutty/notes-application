@@ -28,6 +28,8 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
   },
   ignorePatterns: ['webpack.config.js', 'babel.config.js', '.eslintrc.js', 'jest.config.js'],
 };
