@@ -1,8 +1,10 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { MenuIcon } from '@space-kit/icons';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadNotes } from '../actions/notes';
+import { IconButton } from '../shared/components/iconButton';
 import { colors } from '../shared/components/themes';
 
 interface NavbarProps {
@@ -36,9 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header role="banner" css={navbarStyles}>
-      <button type="button" onClick={() => toggleSidebar()}>
-        Hamburger
-      </button>
+      <IconButton onClick={() => toggleSidebar()} icon={<MenuIcon size={24} />} />
       <div>
         <input
           type="search"
