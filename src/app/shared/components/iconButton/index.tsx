@@ -5,7 +5,7 @@ import React, { HTMLAttributes } from 'react';
 import { Theme } from '../themes';
 
 const iconButtonStyles = (theme: Theme) => css`
-  background: ${theme.colors.primary};
+  background: ${theme.colors.text};
 `;
 
 interface IconButtonProps extends HTMLAttributes<HTMLElement> {
