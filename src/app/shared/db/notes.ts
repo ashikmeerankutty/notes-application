@@ -2,8 +2,17 @@ import { getItemFromStorage, setItemToStorage } from './storage';
 import { Note } from './types';
 import { v4 as uuid4 } from 'uuid';
 
-export const getNotes = () => {
-  return getItemFromStorage('notes') || [];
+export const getNotes = (query?: string, page = 1, pageSize = 10) => {
+  let notes = getItemFromStorage('notes') || [];
+  if (query) {
+    notes = notes.filter(
+      (note: Note) =>
+        note.title.toLowerCase().includes(query.toLowerCase()) ||
+        note.notes.includes(query.toLowerCase())
+    );
+  }
+
+  return notes.slice((page - 1) * pageSize, page * pageSize);
 };
 
 export const addNote = (note: Note) => {
