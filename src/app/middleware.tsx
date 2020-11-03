@@ -27,6 +27,7 @@ interface MiddlewareProps {
 }
 
 const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) => {
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [mode, setMode] = useState(!getBrowserTheme());
   const loading = useLoading([]);
 
@@ -39,8 +40,11 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
   return (
     <ThemeProvider theme={theme}>
       <Global styles={globalStyles(theme)} />
-      <Navbar setTheme={() => setMode(!mode)}></Navbar>
-      <Sidebar />
+      <Navbar
+        toggleSidebar={() => setSidebarExpanded(!sidebarExpanded)}
+        setTheme={() => setMode(!mode)}
+      ></Navbar>
+      <Sidebar expanded={sidebarExpanded} />
       <div role="main" css={containerStyles}>
         {children}
       </div>

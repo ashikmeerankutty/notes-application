@@ -17,35 +17,51 @@ const sidebarStyles = (theme: Theme) => css`
   color: ${theme.colors.text};
 `;
 
-const navbarStyles = css`
+const navbarStyles = (expanded: boolean) => css`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   padding-bottom: 30px;
   padding-top: 24px;
-  width: 64px;
+  width: ${expanded ? '100%' : '64px'};
 `;
 
-const navIconStyles = css`
+const navItemsStyles = (expanded: boolean) => css`
   display: flex;
   flex-direction: column;
   padding-top: 20px;
-  align-items: center;
+  width: ${expanded ? '100%' : '48px'};
 `;
 
-interface SidebarProps {}
+const navItem = css`
+  display: flex;
+  overflow: hidden;
+`;
 
-export const Sidebar: React.FC<SidebarProps> = () => {
+interface SidebarProps {
+  expanded: boolean;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
   const theme = useTheme<Theme>();
 
   return (
     <div css={sidebarStyles(theme)}>
-      <nav css={navbarStyles} role="navigation" aria-label="sidebar">
-        <div css={navIconStyles}>
-          <a key="notes">Notes</a>
-          <a key="archived">Archived</a>
+      <nav css={navbarStyles(expanded)} role="navigation" aria-label="sidebar">
+        <div css={navItemsStyles(expanded)}>
+          <div css={navItem} key="notes">
+            <p>icon</p>
+            <p>Notes</p>
+          </div>
+          <div css={navItem} key="archived">
+            <p>icon</p>
+            <p>Archived</p>
+          </div>
+          <div css={navItem} key="trash">
+            <p>icon</p>
+            <p>Trash</p>
+          </div>
         </div>
       </nav>
     </div>

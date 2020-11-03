@@ -5,6 +5,7 @@ import { colors } from '../shared/components/themes';
 
 interface NavbarProps {
   setTheme: () => void;
+  toggleSidebar: () => void;
 }
 
 const navbarStyles = css`
@@ -18,10 +19,15 @@ const navbarStyles = css`
   justify-content: space-between;
 `;
 
-export const Navbar: React.FC<NavbarProps> = ({ setTheme }: NavbarProps) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  setTheme,
+  toggleSidebar,
+}: NavbarProps) => {
   return (
     <header role="banner" css={navbarStyles}>
-      <button type="button">Hamburger</button>
+      <button type="button" onClick={() => toggleSidebar()}>
+        Hamburger
+      </button>
       <button
         type="button"
         onClick={() => {
