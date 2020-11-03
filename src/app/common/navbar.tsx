@@ -1,6 +1,8 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loadNotes } from '../actions/notes';
 import { colors } from '../shared/components/themes';
 
 interface NavbarProps {
@@ -23,11 +25,31 @@ export const Navbar: React.FC<NavbarProps> = ({
   setTheme,
   toggleSidebar,
 }: NavbarProps) => {
+  const [searchText, setSearchText] = useState('');
+  const dispatch = useDispatch();
+
+  const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      dispatch(loadNotes(searchText));
+    }
+  };
+
   return (
     <header role="banner" css={navbarStyles}>
       <button type="button" onClick={() => toggleSidebar()}>
         Hamburger
       </button>
+      <div>
+        <input
+          type="search"
+          value={searchText}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearchText(e.target.value)
+          }
+          placeholder="Search Notes"
+          onKeyDown={onSearch}
+        />
+      </div>
       <button
         type="button"
         onClick={() => {
