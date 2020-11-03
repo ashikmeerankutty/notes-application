@@ -18,6 +18,16 @@ module.exports = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /node_modules\/vfile\/core\.js/,
+        use: [{
+          loader: 'imports-loader',
+          options: {
+            type: 'commonjs',
+            imports: ['single process/browser process'],
+          },
+        }],
+      }
     ],
   },
   resolve: {
@@ -27,6 +37,7 @@ module.exports = {
         __dirname,
         './src/app/shared/components'
       ),
+      path: "path-browserify",
     }
   },
   plugins: [
