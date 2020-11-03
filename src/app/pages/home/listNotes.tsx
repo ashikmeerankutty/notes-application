@@ -1,22 +1,32 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { State } from '../../reducers';
+import { Note } from '../../shared/db/types';
 
 const listNotesStyles = css`
   display: flex;
 `;
 
-interface ListNotesProps {}
+interface ListNotesProps {
+  notes: Note[];
+  setSelectedNote: (id: string) => void;
+}
 
-const ListNotes: React.FC<ListNotesProps> = () => {
-  const notes = useSelector((state: State) => state.notes.notes);
-
+const ListNotes: React.FC<ListNotesProps> = ({
+  notes,
+  setSelectedNote,
+}: ListNotesProps) => {
   return (
     <div css={listNotesStyles}>
       {notes.map((note) => (
-        <div key={note.id}>{note.title}</div>
+        <div
+          onClick={() => {
+            setSelectedNote(note.id);
+          }}
+          key={note.id}
+        >
+          {note.title}
+        </div>
       ))}
     </div>
   );
