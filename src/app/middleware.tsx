@@ -1,3 +1,5 @@
+/**@jsx jsx */
+import { jsx } from '@emotion/core';
 import React, { ReactNode, useState } from 'react';
 import { Global, css } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
@@ -5,20 +7,27 @@ import { useLoading } from './shared/utils/loadingStates';
 import { lightTheme, darkTheme } from 'components';
 import { getBrowserTheme, THEMES } from './shared/utils/theme';
 import { Theme } from 'components';
+import { Navbar, Sidebar } from './common';
 
 const globalStyles = (theme: Theme) => css`
   body {
+    margin: 0;
+    padding: 0;
     background: ${theme.colors.background};
   }
 `;
 
-type MiddlewareProps = {
+const containerStyles = css`
+  margin-top: 64px;
+  margin-left: 64px;
+`;
+
+interface MiddlewareProps {
   children?: ReactNode;
-};
+}
 
 const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) => {
-  const [mode, setMode] = useState(getBrowserTheme());
-  console.log(mode);
+  const [mode, setMode] = useState(!getBrowserTheme());
   const loading = useLoading([]);
 
   if (loading) {
@@ -30,14 +39,11 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
   return (
     <ThemeProvider theme={theme}>
       <Global styles={globalStyles(theme)} />
-      <button
-        onClick={() => {
-          setMode(!mode);
-        }}
-      >
-        Toggle
-      </button>
-      <div>{children}</div>
+      <Navbar setTheme={() => setMode(!mode)}></Navbar>
+      <Sidebar />
+      <div role="main" css={containerStyles}>
+        {children}
+      </div>
     </ThemeProvider>
   );
 };
