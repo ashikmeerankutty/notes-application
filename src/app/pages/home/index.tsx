@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { State } from 'src/app/reducers';
 import ListNotes from './listNotes';
 import Markdown from './markdown';
-import NewNote from './newNotes';
+import NewNote from './newNote';
 
 const homeStyles = css`
   padding: 30px;

@@ -7,6 +7,7 @@ const darkTheme: Theme = {
     background: colors.neutral9,
     text: colors.white,
     primaryHover: colors.neutral8,
+    border: colors.neutral6,
   },
 };
 

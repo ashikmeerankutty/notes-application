@@ -5,8 +5,8 @@ import { useTheme } from 'emotion-theming';
 import React, { HTMLAttributes } from 'react';
 import { Theme } from '../themes';
 
-const iconButtonStyles = (theme: Theme) => css`
-  background-color: ${theme.colors};
+const iconButtonStyles = (theme: Theme, active: boolean) => css`
+  background-color: ${active ? theme.colors.primaryHover : theme.colors};
   text-decoration: none;
   border: none;
   outline: none;
@@ -26,15 +26,17 @@ const iconButtonStyles = (theme: Theme) => css`
 
 interface IconButtonProps extends HTMLAttributes<HTMLElement> {
   Icon: typeof BlankIcon;
+  active?: boolean;
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
   Icon,
+  active,
   ...rest
 }: IconButtonProps) => {
   const theme = useTheme<Theme>();
   return (
-    <button css={iconButtonStyles(theme)} {...rest}>
+    <button css={iconButtonStyles(theme, active)} {...rest}>
       <Icon color={theme.colors.text} size={16} />
     </button>
   );

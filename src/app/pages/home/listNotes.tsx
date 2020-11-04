@@ -10,6 +10,7 @@ import { Note } from '../../shared/db/types';
 const listNotesStyles = css`
   display: flex;
   flex-direction: column;
+  margin-left: 64px;
 `;
 
 interface ListNotesProps {

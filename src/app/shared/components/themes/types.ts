@@ -4,5 +4,6 @@ export interface Theme {
     background: string;
     text: string;
     primaryHover: string;
+    border: string;
   };
 }

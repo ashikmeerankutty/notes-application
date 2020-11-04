@@ -1,9 +1,10 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { FunctionComponent, useEffect, useCallback, useRef } from 'react';
-import { colors, Portal } from 'components';
+import { colors, Portal, Theme } from 'components';
 import { IconButton } from '../iconButton';
 import { CrossIcon } from '@space-kit/icons';
+import { useTheme } from 'emotion-theming';
 
 const wrapperStyles = css`
   position: fixed;
@@ -18,10 +19,10 @@ const wrapperStyles = css`
   align-items: flex-start;
 `;
 
-const modalStyles = (width: number = 560) => css`
+const modalStyles = (width: number = 560, theme: Theme) => css`
   display: flex;
   flex-direction: column;
-  background-color: ${colors.white};
+  background-color: ${theme.colors.background};
   margin-top: 150px;
   width: ${width}px;
   border-radius: 5px;
@@ -76,6 +77,8 @@ export const Modal: FunctionComponent<ModalProps> = ({
 }: ModalProps) => {
   const targetRef = useRef(null);
 
+  const theme = useTheme<Theme>();
+
   const handleBodyClick = useCallback(
     (event) => {
       if (targetRef.current && targetRef.current.contains(event.target)) {
@@ -114,7 +117,7 @@ export const Modal: FunctionComponent<ModalProps> = ({
       {show && (
         <Portal>
           <div css={wrapperStyles}>
-            <div ref={targetRef} css={modalStyles(width)}>
+            <div ref={targetRef} css={modalStyles(width, theme)}>
               {header && (
                 <div css={headerStyles}>
                   <p className="headerStyles__text">{headerText}</p>

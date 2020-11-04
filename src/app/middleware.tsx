@@ -17,14 +17,26 @@ const globalStyles = (theme: Theme) => css`
     background: ${theme.colors.background};
     font-family: 'Roboto', sans-serif;
   }
-  * {
+  body,
+  input,
+  textarea {
     font-family: 'Roboto', sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    padding: 0;
+    margin: 0;
   }
 `;
 
 const containerStyles = css`
   margin-top: 64px;
-  margin-left: 64px;
 `;
 
 interface MiddlewareProps {
