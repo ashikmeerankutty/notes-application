@@ -41,7 +41,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  const themeToggleButton = mode === THEMES.light ? MoonIcon : LightbulbIcon;
+  const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;
 
   return (
     <header role="banner" css={navbarStyles}>
