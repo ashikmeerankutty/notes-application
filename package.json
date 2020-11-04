@@ -18,7 +18,7 @@
   "author": "Ashik Meerankutty",
   "dependencies": {
     "@emotion/core": "^10.0.35",
-    "@space-kit/icons": "0.1.0-alpha.1",
+    "@space-kit/icons": "0.1.0-alpha.2",
     "@types/uuid": "^8.3.0",
     "emotion-theming": "^10.0.27",
     "react": "^16.13.1",

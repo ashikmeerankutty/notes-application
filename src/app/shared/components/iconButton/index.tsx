@@ -35,7 +35,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   const theme = useTheme<Theme>();
   return (
     <button css={iconButtonStyles(theme)} {...rest}>
-      <Icon size={16} />
+      <Icon color={theme.colors.text} size={16} />
     </button>
   );
 };
