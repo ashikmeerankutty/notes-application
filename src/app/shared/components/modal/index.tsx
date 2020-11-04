@@ -118,10 +118,7 @@ export const Modal: FunctionComponent<ModalProps> = ({
               {header && (
                 <div css={headerStyles}>
                   <p className="headerStyles__text">{headerText}</p>
-                  <IconButton
-                    onClick={() => onClose()}
-                    icon={<CrossIcon size={24} />}
-                  />
+                  <IconButton onClick={() => onClose()} Icon={CrossIcon} />
                 </div>
               )}
               <div css={contentStyles(padding)}>

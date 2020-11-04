@@ -6,6 +6,7 @@ const lightTheme: Theme = {
     primary: colors.neutral9,
     background: colors.white,
     text: colors.neutral9,
+    primaryHover: colors.neutral3,
   },
 };
 

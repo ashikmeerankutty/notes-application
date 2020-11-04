@@ -50,7 +50,7 @@ const ListNotes: React.FC<ListNotesProps> = ({
             onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
               onPinClick(e, note.id)
             }
-            icon={<PinIcon size={24} />}
+            Icon={PinIcon}
           />
         </div>
       ))}
@@ -68,7 +68,7 @@ const ListNotes: React.FC<ListNotesProps> = ({
             onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
               onPinClick(e, note.id)
             }
-            icon={<PinIcon size={24} />}
+            Icon={PinIcon}
           />
         </div>
       ))}
