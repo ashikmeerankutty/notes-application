@@ -1,15 +1,17 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { MenuIcon } from '@space-kit/icons';
+import { LightbulbIcon, MenuIcon, MoonIcon } from '@space-kit/icons';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadNotes } from '../actions/notes';
 import { IconButton } from '../shared/components/iconButton';
 import { colors } from '../shared/components/themes';
+import { THEMES } from '../shared/utils/theme';
 
 interface NavbarProps {
   setTheme: () => void;
   toggleSidebar: () => void;
+  mode: boolean;
 }
 
 const navbarStyles = css`
@@ -20,12 +22,15 @@ const navbarStyles = css`
   border-bottom: 1px solid ${colors.neutral5};
   box-sizing: border-box;
   display: flex;
+  align-items: center;
+  padding: 8px;
   justify-content: space-between;
 `;
 
 export const Navbar: React.FC<NavbarProps> = ({
   setTheme,
   toggleSidebar,
+  mode,
 }: NavbarProps) => {
   const [searchText, setSearchText] = useState('');
   const dispatch = useDispatch();
@@ -36,9 +41,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
+  const themeToggleButton = mode === THEMES.light ? MoonIcon : LightbulbIcon;
+
   return (
     <header role="banner" css={navbarStyles}>
-      <IconButton onClick={() => toggleSidebar()} icon={<MenuIcon size={24} />} />
+      <IconButton onClick={() => toggleSidebar()} Icon={MenuIcon} />
       <div>
         <input
           type="search"
@@ -50,14 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           onKeyDown={onSearch}
         />
       </div>
-      <button
-        type="button"
-        onClick={() => {
-          setTheme();
-        }}
-      >
-        Toggle
-      </button>
+      <IconButton onClick={() => setTheme()} Icon={themeToggleButton} />
     </header>
   );
 };

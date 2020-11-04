@@ -43,6 +43,7 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
       <Navbar
         toggleSidebar={() => setSidebarExpanded(!sidebarExpanded)}
         setTheme={() => setMode(!mode)}
+        mode={mode}
       ></Navbar>
       <Sidebar expanded={sidebarExpanded} />
       <div role="main" css={containerStyles}>

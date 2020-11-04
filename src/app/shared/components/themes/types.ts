@@ -3,5 +3,6 @@ export interface Theme {
     primary: string;
     background: string;
     text: string;
+    primaryHover: string;
   };
 }
