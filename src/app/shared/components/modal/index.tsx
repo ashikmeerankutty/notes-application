@@ -38,9 +38,11 @@ const headerStyles = () => css`
   display: flex;
   flex-shrink: 0;
   justify-content: space-between;
+  align-items: center;
   .headerStyles__text {
     font-size: 20px;
     font-weight: 500;
+    margin: 0;
   }
   border-bottom: 1px solid ${colors.neutral4};
 `;
