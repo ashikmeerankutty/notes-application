@@ -48,8 +48,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header role="banner" css={navbarStyles(theme)}>
-      <IconButton onClick={() => toggleSidebar()} Icon={MenuIcon} />
-      <div>
+      <IconButton key="menuicon" onClick={() => toggleSidebar()} Icon={MenuIcon} />
+      <div key="serchinput">
         <input
           type="search"
           value={searchText}
@@ -60,7 +60,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           onKeyDown={onSearch}
         />
       </div>
-      <IconButton onClick={() => setTheme()} Icon={themeToggleButton} />
+      <IconButton
+        key="themeicon"
+        onClick={() => setTheme()}
+        Icon={themeToggleButton}
+      />
     </header>
   );
 };

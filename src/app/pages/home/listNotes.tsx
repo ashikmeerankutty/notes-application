@@ -45,7 +45,7 @@ const ListNotes: React.FC<ListNotesProps> = ({ notes }: ListNotesProps) => {
           />
         ))}
       </div>
-      <h3>Not pinned</h3>
+      <h3>Others</h3>
       <div css={listNotesStyles}>
         {unPinnedNotes.map((note) => (
           <NoteItem
