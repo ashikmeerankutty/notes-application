@@ -4,7 +4,9 @@ import { MoreIcon, PinIcon } from '@space-kit/icons';
 import { IconButton, Menu, MenuGroup, MenuItem, Popover, Theme } from 'components';
 import { useTheme } from 'emotion-theming';
 import React, { useState } from 'react';
-import { Note } from 'src/app/shared/db/types';
+import { useDispatch } from 'react-redux';
+import { deleteNote, archiveNote, pinNote } from '../../actions/notes';
+import { Note } from '../../shared/db/types';
 
 const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
   position: relative;
@@ -47,6 +49,10 @@ const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
   cursor: default;
 `;
 
+const noteDetailStyles = css`
+  height: 100%;
+`;
+
 interface NoteItemProps {
   note: Note;
   onSelect: () => void;
@@ -54,13 +60,23 @@ interface NoteItemProps {
 
 const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) => {
   const [showMenu, setShowMenu] = useState(false);
+
+  const dispatch = useDispatch();
+
   const theme = useTheme<Theme>();
   return (
     <div css={noteItemStyles(theme, showMenu)}>
       <div className="noteItemStyles__pin">
-        <IconButton Icon={PinIcon} size={32} />
+        <IconButton
+          active={note.pinned}
+          onClick={() => {
+            dispatch(pinNote(note.id));
+          }}
+          Icon={PinIcon}
+          size={32}
+        />
       </div>
-      <div onClick={onSelect}>
+      <div css={noteDetailStyles} onClick={onSelect}>
         {note.title && <h4>{note.title}</h4>}
         {note.notes && <p>{note.notes}</p>}
       </div>
@@ -74,14 +90,14 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
               <MenuGroup title="Options">
                 <MenuItem
                   onSelect={() => {
-                    setShowMenu(true);
+                    dispatch(deleteNote(note.id));
                   }}
                 >
                   Delete
                 </MenuItem>
                 <MenuItem
                   onSelect={() => {
-                    setShowMenu(true);
+                    dispatch(archiveNote(note.id));
                   }}
                 >
                   Archive
