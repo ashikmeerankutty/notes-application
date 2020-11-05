@@ -1,12 +1,12 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { MoreIcon, PinIcon } from '@space-kit/icons';
-import { IconButton, Theme } from 'components';
+import { IconButton, Menu, MenuGroup, MenuItem, Popover, Theme } from 'components';
 import { useTheme } from 'emotion-theming';
-import React from 'react';
+import React, { useState } from 'react';
 import { Note } from 'src/app/shared/db/types';
 
-const noteItemStyles = (theme: Theme) => css`
+const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
   position: relative;
   width: 250px;
   min-height: 100px;
@@ -25,13 +25,14 @@ const noteItemStyles = (theme: Theme) => css`
     top: 2px;
     right: 2px;
     width: 32px;
-    opacity: 0;
+    opacity: ${showMenu ? 1 : 0};
     transition: opacity 0.5s;
   }
   .noteItemStyles__toolbar {
     display: flex;
+    width: 100%;
     justify-content: flex-end;
-    opacity: 0;
+    opacity: ${showMenu ? 1 : 0};
     transition: opacity 0.5s;
   }
   &:hover {
@@ -52,18 +53,50 @@ interface NoteItemProps {
 }
 
 const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) => {
+  const [showMenu, setShowMenu] = useState(false);
   const theme = useTheme<Theme>();
   return (
-    <div css={noteItemStyles(theme)} onClick={onSelect}>
+    <div css={noteItemStyles(theme, showMenu)}>
       <div className="noteItemStyles__pin">
         <IconButton Icon={PinIcon} size={32} />
       </div>
-      <div>
+      <div onClick={onSelect}>
         {note.title && <h4>{note.title}</h4>}
         {note.notes && <p>{note.notes}</p>}
       </div>
       <div className="noteItemStyles__toolbar">
-        <IconButton Icon={MoreIcon} size={32} />
+        <Popover
+          onClose={() => setShowMenu(false)}
+          show={showMenu}
+          width={200}
+          content={
+            <Menu>
+              <MenuGroup title="Options">
+                <MenuItem
+                  onSelect={() => {
+                    setShowMenu(true);
+                  }}
+                >
+                  Delete
+                </MenuItem>
+                <MenuItem
+                  onSelect={() => {
+                    setShowMenu(true);
+                  }}
+                >
+                  Archive
+                </MenuItem>
+              </MenuGroup>
+            </Menu>
+          }
+        >
+          <IconButton
+            active={showMenu}
+            onClick={() => setShowMenu(true)}
+            Icon={MoreIcon}
+            size={32}
+          />
+        </Popover>
       </div>
     </div>
   );
