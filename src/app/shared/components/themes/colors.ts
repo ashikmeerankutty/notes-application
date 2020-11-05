@@ -66,7 +66,7 @@ const colors: ColorsType = {
   neutral6: '#6C7280',
   neutral7: '#374151',
   neutral8: '#252F3F',
-  neutral9: '#161D2E',
+  neutral9: '#202124',
   black: '#000000',
 
   red50: '#FFEBEE',
