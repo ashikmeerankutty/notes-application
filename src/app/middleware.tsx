@@ -37,6 +37,7 @@ const globalStyles = (theme: Theme) => css`
 
 const containerStyles = css`
   margin-top: 64px;
+  display: flex;
 `;
 
 interface MiddlewareProps {
@@ -62,8 +63,8 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
         setTheme={() => setMode(!mode)}
         mode={mode}
       ></Navbar>
-      <Sidebar expanded={sidebarExpanded} />
       <div role="main" css={containerStyles}>
+        <Sidebar expanded={sidebarExpanded} />
         {children}
       </div>
     </ThemeProvider>
