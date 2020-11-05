@@ -1,78 +1,63 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { PinIcon } from '@space-kit/icons';
-import { IconButton } from 'components';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { updateNote } from '../../actions/notes';
+import React, { useState } from 'react';
 import { Note } from '../../shared/db/types';
+import NoteItem from './NoteItem';
+import NoteModal from './noteModal';
 
 const listNotesStyles = css`
   display: flex;
-  flex-direction: column;
-  margin-left: 64px;
+  flex-wrap: wrap;
+`;
+
+const listNotesWrapperStyles = css`
+  padding-top: 40px;
 `;
 
 interface ListNotesProps {
   notes: Note[];
-  setSelectedNote: (id: string) => void;
 }
 
-const ListNotes: React.FC<ListNotesProps> = ({
-  notes,
-  setSelectedNote,
-}: ListNotesProps) => {
-  const dispatch = useDispatch();
+const ListNotes: React.FC<ListNotesProps> = ({ notes }: ListNotesProps) => {
+  const [selectedNote, setSelectedNote] = useState<Note>(null);
+  // const dispatch = useDispatch();
 
-  const onPinClick = (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    id: string
-  ) => {
-    const note = notes.find((note) => note.id === id);
-    const updatedNote = { ...note, pinned: !note.pinned };
-    dispatch(updateNote(id, updatedNote));
-    event.stopPropagation();
-  };
+  // const onPinClick = (
+  //   event: React.MouseEvent<HTMLElement, MouseEvent>,
+  //   id: string
+  // ) => {
+  //   dispatch(pinNote(id));
+  //   event.stopPropagation();
+  // };
 
   const pinnedNotes = notes.filter((notes) => notes.pinned);
+  const unPinnedNotes = notes.filter((notes) => !notes.pinned);
 
   return (
-    <div css={listNotesStyles}>
+    <div css={listNotesWrapperStyles}>
       <h3>Pinned</h3>
-      {pinnedNotes.map((note: Note) => (
-        <div
-          onClick={() => {
-            setSelectedNote(note.id);
-          }}
-          key={note.id}
-        >
-          {note.title}
-          <IconButton
-            onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-              onPinClick(e, note.id)
-            }
-            Icon={PinIcon}
+      <div css={listNotesStyles}>
+        {pinnedNotes.map((note: Note) => (
+          <NoteItem
+            key={note.id}
+            onSelect={() => setSelectedNote(note)}
+            note={note}
           />
-        </div>
-      ))}
-
+        ))}
+      </div>
       <h3>Not pinned</h3>
-      {notes.map((note) => (
-        <div
-          onClick={() => {
-            setSelectedNote(note.id);
-          }}
-          key={note.id}
-        >
-          {note.title}
-          <IconButton
-            onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) =>
-              onPinClick(e, note.id)
-            }
-            Icon={PinIcon}
+      <div css={listNotesStyles}>
+        {unPinnedNotes.map((note) => (
+          <NoteItem
+            key={note.id}
+            onSelect={() => setSelectedNote(note)}
+            note={note}
           />
-        </div>
-      ))}
+        ))}
+      </div>
+      {selectedNote && (
+        <NoteModal note={selectedNote} onClose={() => setSelectedNote(null)} />
+      )}
     </div>
   );
 };

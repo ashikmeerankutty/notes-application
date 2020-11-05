@@ -5,14 +5,14 @@ import { useTheme } from 'emotion-theming';
 import React, { HTMLAttributes } from 'react';
 import { Theme } from '../themes';
 
-const iconButtonStyles = (theme: Theme, active: boolean) => css`
-  background-color: ${active ? theme.colors.primaryHover : theme.colors};
+const iconButtonStyles = (theme: Theme, active: boolean, size: number) => css`
+  background-color: ${active ? theme.colors.primaryHover : theme.colors.background};
   text-decoration: none;
   border: none;
   outline: none;
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  width: ${size}px;
+  height: ${size}px;
   border-radius: 100%;
   transition: 0.3s ease;
   display: inline-flex;
@@ -27,16 +27,18 @@ const iconButtonStyles = (theme: Theme, active: boolean) => css`
 interface IconButtonProps extends HTMLAttributes<HTMLElement> {
   Icon: typeof BlankIcon;
   active?: boolean;
+  size?: number;
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
   Icon,
   active,
+  size = 48,
   ...rest
 }: IconButtonProps) => {
   const theme = useTheme<Theme>();
   return (
-    <button css={iconButtonStyles(theme, active)} {...rest}>
+    <button css={iconButtonStyles(theme, active, size)} {...rest}>
       <Icon color={theme.colors.text} size={16} />
     </button>
   );
