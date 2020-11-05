@@ -54,3 +54,17 @@ export const getNote = (noteId: string) => {
   const notes = getNotes();
   return notes.find((note: Note) => note.id === noteId);
 };
+
+export const archiveNote = (noteId: string) => {
+  const filteredNote = getNotes().find((note: Note) => noteId === note.id);
+  const updatedNote = { ...filteredNote, archived: !filteredNote.archived };
+  updateNote(updatedNote.id, updatedNote);
+  return updatedNote;
+};
+
+export const pinNote = (noteId: string) => {
+  const filteredNote = getNotes().find((note: Note) => noteId === note.id);
+  const updatedNote = { ...filteredNote, pinned: !filteredNote.pinned };
+  updateNote(updatedNote.id, updatedNote);
+  return updatedNote;
+};

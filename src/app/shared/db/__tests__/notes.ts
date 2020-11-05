@@ -1,9 +1,11 @@
 import {
   addNote,
+  archiveNote,
   createNewNote,
   deleteNote,
   getNote,
   getNotes,
+  pinNote,
   updateNote,
 } from '../notes';
 import { getItemFromStorage, setItemToStorage, clearStorage } from '../storage';
@@ -40,13 +42,13 @@ describe('Note CRUD Operations', () => {
     },
   ];
 
-  it('Add a note to storage', () => {
+  it('add a note to storage', () => {
     const newNote: Note = sampleNotes[0];
     addNote(newNote);
     expect(getItemFromStorage('notes')).toContainEqual(newNote);
   });
 
-  it('Create new note', () => {
+  it('areate new note', () => {
     const newNote = createNewNote(sampleNotes[0].title, sampleNotes[0].notes);
     expect(newNote).toEqual(
       expect.objectContaining({
@@ -62,7 +64,7 @@ describe('Note CRUD Operations', () => {
     expect(getItemFromStorage('notes')).toContainEqual(newNote);
   });
 
-  it('Delete a note from storage', () => {
+  it('delete a note from storage', () => {
     const removeId = '1';
     setItemToStorage('notes', sampleNotes);
     deleteNote(removeId);
@@ -71,7 +73,7 @@ describe('Note CRUD Operations', () => {
     );
   });
 
-  it('Update a note from storage', () => {
+  it('update a note from storage', () => {
     const updatedNote: Note = {
       id: '1',
       title: 'Test Updated Note',
@@ -137,10 +139,27 @@ describe('Note CRUD Operations', () => {
     });
   });
 
-  it('Get a note from storage', () => {
+  it('get a note from storage', () => {
     const noteId = '1';
     setItemToStorage('notes', sampleNotes);
     const result = getNote(noteId);
     expect(result).toEqual(sampleNotes[0]);
+  });
+
+  it('archive a note', () => {
+    const noteId = '1';
+    setItemToStorage('notes', sampleNotes);
+    const result = archiveNote(noteId);
+    const expected = { ...sampleNotes[0], archived: true };
+    expect(result).toEqual(expected);
+  });
+
+  it('pin a note', () => {
+    clearStorage();
+    const noteId = '1';
+    setItemToStorage('notes', sampleNotes);
+    const result = pinNote(noteId);
+    const expected = { ...sampleNotes[0], pinned: true };
+    expect(result).toEqual(expected);
   });
 });

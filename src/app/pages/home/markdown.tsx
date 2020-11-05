@@ -1,5 +1,5 @@
 /**@jsx jsx */
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import React from 'react';
 import unified from 'unified';
 import markdown from 'remark-parse';
@@ -12,10 +12,16 @@ import remark2rehype from 'remark-rehype';
 //@ts-ignore
 import highlight from 'rehype-highlight';
 import rehype2react from 'rehype-react';
+import { Theme } from 'components';
+import { useTheme } from 'emotion-theming';
 
 interface MarkdownProps {
   text: string;
 }
+
+const markdownStyles = (theme: Theme) => css`
+  color: ${theme.colors.text};
+`;
 
 const processor = unified()
   .use(markdown)
@@ -27,7 +33,8 @@ const processor = unified()
   .use(rehype2react, { createElement: React.createElement });
 
 const Markdown: React.FC<MarkdownProps> = ({ text }: MarkdownProps) => {
-  return <div>{processor.processSync(text).result}</div>;
+  const theme = useTheme<Theme>();
+  return <div css={markdownStyles(theme)}>{processor.processSync(text).result}</div>;
 };
 
 export default Markdown;

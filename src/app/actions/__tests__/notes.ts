@@ -1,6 +1,13 @@
 import { Note } from '../../shared/db/types';
 import { CREATE_NOTE, DELETE_NOTE, LOAD_NOTES, UPDATE_NOTE } from '../actionTypes';
-import { createNewNote, deleteNote, loadNotes, updateNote } from '../notes';
+import {
+  archiveNote,
+  createNewNote,
+  deleteNote,
+  loadNotes,
+  pinNote,
+  updateNote,
+} from '../notes';
 import * as notesDb from '../../shared/db/notes';
 import { clearStorage } from '../../shared/db/storage';
 
@@ -87,5 +94,29 @@ describe('Note action', () => {
       notes: [newNote],
     });
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('archive a note', () => {
+    const newNote = notesDb.createNewNote(
+      sampleNotes[0].title,
+      sampleNotes[0].notes
+    );
+    const archivedNote = { ...newNote, archived: true };
+    expect(archiveNote(newNote.id)).toEqual({
+      type: UPDATE_NOTE,
+      note: archivedNote,
+    });
+  });
+
+  it('pin a note', () => {
+    const newNote = notesDb.createNewNote(
+      sampleNotes[0].title,
+      sampleNotes[0].notes
+    );
+    const pinnedNote = { ...newNote, pinned: true };
+    expect(pinNote(newNote.id)).toEqual({
+      type: UPDATE_NOTE,
+      note: pinnedNote,
+    });
   });
 });
