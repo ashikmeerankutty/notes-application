@@ -4,10 +4,12 @@ import React, { ReactNode, useState } from 'react';
 import { Global, css } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
 import { useLoading } from './shared/utils/loadingStates';
-import { lightTheme, darkTheme } from 'components';
+import { lightTheme, darkTheme, Toast } from 'components';
 import { getBrowserTheme, THEMES } from './shared/utils/theme';
-import { Theme } from 'components';
+import { Theme, ToastManager } from 'components';
 import { Navbar, Sidebar } from './common';
+import { useSelector } from 'react-redux';
+import { State } from './reducers';
 
 const globalStyles = (theme: Theme) => css`
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
@@ -48,6 +50,7 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [mode, setMode] = useState(!getBrowserTheme());
   const loading = useLoading([]);
+  const toasts = useSelector((state: State) => state.globals.toastStates);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -67,6 +70,13 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
         <Sidebar expanded={sidebarExpanded} />
         {children}
       </div>
+      <ToastManager>
+        {toasts.map((toast) => (
+          <Toast key={toast.id} type={toast.state}>
+            {toast.message}
+          </Toast>
+        ))}
+      </ToastManager>
     </ThemeProvider>
   );
 };
