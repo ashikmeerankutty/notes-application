@@ -38,7 +38,7 @@ const toastStyles = (type: string) => css`
   margin-top: 10px;
   padding: 10px 30px;
   width: 100%;
-  z-index: 9999;
+  z-index: 99999;
   color: ${colors.neutral9};
   display: flex;
   border-left: 3px solid ${types[type].color};

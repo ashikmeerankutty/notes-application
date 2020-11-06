@@ -5,8 +5,9 @@ import { IconButton, Menu, MenuGroup, MenuItem, Popover, Theme } from 'component
 import { useTheme } from 'emotion-theming';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteNote, archiveNote, pinNote } from '../../actions/notes';
-import { Note } from '../../shared/db/types';
+import { showToast } from '../actions/globals';
+import { deleteNote, archiveNote, pinNote } from '../actions/notes';
+import { Note } from '../shared/db/types';
 
 const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
   position: relative;
@@ -91,6 +92,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
                 <MenuItem
                   onSelect={() => {
                     dispatch(deleteNote(note.id));
+                    dispatch(showToast('error', 'Note deleted'));
                   }}
                 >
                   Delete
@@ -98,6 +100,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
                 <MenuItem
                   onSelect={() => {
                     dispatch(archiveNote(note.id));
+                    dispatch(showToast('error', 'Note archived'));
                   }}
                 >
                   Archive

@@ -1,12 +1,13 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { PinIcon, EyeOpenIcon } from '@space-kit/icons';
+import { PinIcon, EyeOpenIcon, RefreshIcon, ArchiveIcon } from '@space-kit/icons';
 import { Modal, IconButton, Theme } from 'components';
 import { useTheme } from 'emotion-theming';
 import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createNewNote, updateNote } from '../../actions/notes';
-import { Note } from '../../shared/db/types';
+import { showToast } from '../actions/globals';
+import { archiveNote, createNewNote, pinNote, updateNote } from '../actions/notes';
+import { Note } from '../shared/db/types';
 import Markdown from './markdown';
 
 interface NoteModalProps {
@@ -56,6 +57,23 @@ const notePreviewStyles = css`
   flex-basis: 0;
 `;
 
+const refreshIconStyles = (spin: boolean) => css`
+  transform-origin: 50%;
+  animation: ${spin ? 'spin infinite 2s' : 'none'};
+  width: 16px;
+  height: 16px;
+  @keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(359deg);
+      transform: rotate(359deg);
+    }
+  }
+`;
+
 const NoteModal: FunctionComponent<NoteModalProps> = ({
   note,
   onClose,
@@ -63,6 +81,9 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
   const [title, setTitle] = useState<string>('');
   const [updatedNote, setUpdatedNote] = useState<Note>(null);
   const [description, setDescription] = useState<string>('');
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const [archived, setArchived] = useState(false);
   const [preview, setPreview] = useState(false);
 
   const dispatch = useDispatch();
@@ -73,27 +94,59 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
       setUpdatedNote(note);
       setTitle(note.title);
       setDescription(note.notes);
+      setPinned(note.pinned);
+      setArchived(note.archived);
     }
   }, [note]);
 
   const onNoteCreate = (note: Note) => {
-    setUpdatedNote(note);
+    const updatedNote = { ...note, pinned, archived: archived };
+    dispatch(updateNote(note.id, updatedNote));
+    setUpdatedNote(updatedNote);
+    window.location.hash = `note/${updatedNote.id}`;
   };
 
-  const onSave = () => {
+  const onSave = (tit: string = '', desc: string = '') => {
+    setIsUpdating(true);
     if (!updatedNote) {
-      if (title || note) {
-        dispatch(createNewNote(title, description, onNoteCreate));
+      if (tit || desc) {
+        dispatch(createNewNote(tit, desc, onNoteCreate));
       }
     } else {
       dispatch(
-        updateNote(updatedNote.id, { ...updatedNote, title, notes: description })
+        updateNote(updatedNote.id, {
+          ...updatedNote,
+          title: tit || title,
+          notes: desc || description,
+          pinned,
+        })
       );
     }
+    setTimeout(() => {
+      setIsUpdating(false);
+    }, 1500);
   };
 
   const onPreviewClick = () => {
     setPreview(!preview);
+  };
+
+  const onPinPressed = () => {
+    setPinned(!pinned);
+    if (updatedNote.id) {
+      dispatch(pinNote(updatedNote.id));
+      const pinnedMessage = !pinned ? 'Note pinned' : 'Note unpinned';
+      dispatch(showToast('success', pinnedMessage));
+    }
+  };
+
+  const onArchivePressed = () => {
+    setArchived(!archived);
+    if (updatedNote.id) {
+      dispatch(archiveNote(updatedNote.id));
+      const archivedMessage = !archived ? 'Note archived' : 'Note unarchived';
+      dispatch(showToast('success', archivedMessage));
+    }
   };
 
   return (
@@ -104,11 +157,16 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
           aria-label="note title"
           key="title"
           value={title}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            onSave(e.target.value, '');
+            setTitle(e.target.value);
+          }}
           type="text"
           placeholder="Title"
         />
-        <IconButton Icon={PinIcon} />
+        <div css={refreshIconStyles(isUpdating)}>
+          <RefreshIcon color={theme.colors.text} size={16} />
+        </div>
       </div>
       <div css={noteViewStyles}>
         <textarea
@@ -118,9 +176,10 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
           placeholder="Take a note.."
           key="note"
           value={description}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setDescription(e.target.value)
-          }
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+            onSave('', e.target.value);
+            setDescription(e.target.value);
+          }}
         />
         {preview && (
           <div css={notePreviewStyles}>
@@ -131,9 +190,15 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
       <div css={notesToolbarStyles}>
         <div>
           <IconButton active={preview} onClick={onPreviewClick} Icon={EyeOpenIcon} />
+          <IconButton active={pinned} onClick={onPinPressed} Icon={PinIcon} />
+          <IconButton
+            active={archived}
+            onClick={onArchivePressed}
+            Icon={ArchiveIcon}
+          />
         </div>
-        <button key="add" onClick={onSave} type="button">
-          Save Note
+        <button key="add" onClick={onClose} type="button">
+          Close
         </button>
       </div>
     </Modal>

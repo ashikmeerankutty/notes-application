@@ -3,8 +3,8 @@ import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { State } from 'src/app/reducers';
-import ListNotes from './listNotes';
-import NewNote from './newNote';
+import ListNotes from '../../common/listNotes';
+import NewNote from '../../common/newNote';
 
 const homeStyles = css`
   padding: 30px;
