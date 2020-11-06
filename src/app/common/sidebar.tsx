@@ -82,6 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
         <div className="navbar__wrapper">
           <div className="navbarStyles__item">
             <div
+              tabIndex={0}
               onClick={() => history.push('/')}
               css={navItem}
               className={`${path === '' ? 'navItem__active' : ''}`}
@@ -102,6 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
               <p>Pins</p>
             </div> */}
             <div
+              tabIndex={0}
               onClick={() => history.push('/archives')}
               css={navItem(theme)}
               className={`${path === 'archives' ? 'navItem__active' : ''}`}

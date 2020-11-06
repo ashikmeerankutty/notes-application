@@ -151,8 +151,9 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
 
   return (
     <Modal onClose={onClose} show={true}>
-      <div css={noteTitleStyles}>
+      <div tabIndex={0} css={noteTitleStyles}>
         <input
+          tabIndex={0}
           css={noteInputStyle(theme)}
           aria-label="note title"
           key="title"
@@ -170,6 +171,7 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
       </div>
       <div css={noteViewStyles}>
         <textarea
+          tabIndex={0}
           css={noteDescriptionStyles(theme)}
           rows={10}
           aria-label="note"

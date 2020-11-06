@@ -66,8 +66,8 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
 
   const theme = useTheme<Theme>();
   return (
-    <div css={noteItemStyles(theme, showMenu)}>
-      <div className="noteItemStyles__pin">
+    <div tabIndex={0} css={noteItemStyles(theme, showMenu)}>
+      <div tabIndex={0} className="noteItemStyles__pin">
         <IconButton
           active={note.pinned}
           onClick={() => {
@@ -77,7 +77,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
           size={32}
         />
       </div>
-      <div css={noteDetailStyles} onClick={onSelect}>
+      <div tabIndex={0} css={noteDetailStyles} onClick={onSelect}>
         {note.title && <h4>{note.title}</h4>}
         {note.notes && <p>{note.notes}</p>}
       </div>

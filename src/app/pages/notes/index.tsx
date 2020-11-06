@@ -3,10 +3,11 @@ import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { State } from 'src/app/reducers';
+import { Note } from 'src/app/shared/db/types';
 import ListNotes from '../../common/listNotes';
 import NewNote from '../../common/newNote';
 
-const homeStyles = css`
+const notePageStyles = css`
   padding: 30px;
   display: flex;
   width: 100%;
@@ -14,17 +15,22 @@ const homeStyles = css`
   align-content: center;
 `;
 
-interface HomeProps {}
+interface NotePageProps {}
 
-const Home: React.FC<HomeProps> = () => {
+const NotePage: React.FC<NotePageProps> = () => {
   const notes = useSelector((state: State) => state.notes.notes);
+  const pinnedNotes = notes.filter((note: Note) => note.pinned);
+  const others = notes.filter((note: Note) => !note.pinned);
 
   return (
-    <div css={homeStyles}>
+    <div css={notePageStyles}>
       <NewNote key="new" />
-      <ListNotes notes={notes} key="list notes" />
+      <h3>Pinned Notes</h3>
+      <ListNotes notes={pinnedNotes} />
+      <h3>Others</h3>
+      <ListNotes notes={others} />
     </div>
   );
 };
 
-export default Home;
+export default NotePage;

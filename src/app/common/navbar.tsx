@@ -30,6 +30,18 @@ const navbarStyles = (theme: Theme) => css`
   z-index: 999;
 `;
 
+const searchInputStyles = (theme: Theme) => css`
+  max-width: 300px;
+  border: 1px solid ${theme.colors.border};
+  outline: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: 5px;
+  font-weight: 500;
+  background: ${theme.colors.background};
+  color: ${theme.colors.text};
+`;
+
 export const Navbar: React.FC<NavbarProps> = ({
   setTheme,
   toggleSidebar,
@@ -56,8 +68,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header role="banner" css={navbarStyles(theme)}>
       <IconButton key="menuicon" onClick={() => toggleSidebar()} Icon={MenuIcon} />
-      <div key="serchinput">
+      <div tabIndex={0} key="serchinput">
         <input
+          css={searchInputStyles(theme)}
           type="search"
           value={searchText}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
