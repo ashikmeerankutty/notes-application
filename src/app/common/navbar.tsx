@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import { LightbulbIcon, MenuIcon, MoonIcon } from '@space-kit/icons';
 import { useTheme } from 'emotion-theming';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadNotes } from '../actions/notes';
 import { IconButton } from '../shared/components/iconButton';
@@ -26,6 +26,8 @@ const navbarStyles = (theme: Theme) => css`
   align-items: center;
   padding: 8px;
   justify-content: space-between;
+  background: ${theme.colors.background};
+  z-index: 999;
 `;
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -38,11 +40,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const theme = useTheme<Theme>();
 
-  const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      dispatch(loadNotes(searchText));
+  useEffect(() => {
+    const searchQuery = window.location.hash.replace(/^#\/?|\/$/g, '').split('/');
+    if (searchQuery[0] === 'search' && searchQuery[1] !== searchText) {
+      setSearchText(searchQuery[1]);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    dispatch(loadNotes(searchText));
+  }, [searchText]);
 
   const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;
 
@@ -53,11 +60,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         <input
           type="search"
           value={searchText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSearchText(e.target.value)
-          }
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            if (value.length > 0) {
+              window.location.hash = `search/${e.target.value}`;
+              setSearchText(e.target.value);
+            } else {
+              window.location.hash = '';
+              setSearchText('');
+            }
+          }}
           placeholder="Search Notes"
-          onKeyDown={onSearch}
         />
       </div>
       <IconButton
