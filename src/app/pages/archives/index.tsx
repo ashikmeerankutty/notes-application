@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { State } from 'src/app/reducers';
 import { Note } from 'src/app/shared/db/types';
 import ListNotes from '../../common/listNotes';
+import { Text } from 'components';
 
 const archivePageStyles = css`
   padding: 30px;
@@ -14,6 +15,10 @@ const archivePageStyles = css`
   align-content: center;
 `;
 
+const headingStyles = css`
+  margin-top: 40px;
+`;
+
 const ArchivePage: React.FC = () => {
   const notes = useSelector((state: State) =>
     state.notes.notes.filter((note: Note) => note.archived)
@@ -21,7 +26,9 @@ const ArchivePage: React.FC = () => {
 
   return (
     <div css={archivePageStyles}>
-      <h3>Archives</h3>
+      <Text extraStyles={headingStyles} is="h4">
+        Archives
+      </Text>
       <ListNotes notes={notes} key="list notes" />
     </div>
   );

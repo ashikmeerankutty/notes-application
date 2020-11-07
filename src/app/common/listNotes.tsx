@@ -11,7 +11,7 @@ const listNotesStyles = css`
 `;
 
 const listNotesWrapperStyles = css`
-  padding-top: 40px;
+  padding-top: 10px;
 `;
 
 interface ListNotesProps {

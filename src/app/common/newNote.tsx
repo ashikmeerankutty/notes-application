@@ -27,7 +27,6 @@ const NewNote: React.FC<NewNoteProps> = () => {
   return (
     <div>
       <div
-        tabIndex={0}
         css={newNoteStyles}
         onClick={() => {
           setShowModal(true);
@@ -35,7 +34,6 @@ const NewNote: React.FC<NewNoteProps> = () => {
         onKeyDown={() => setShowModal(true)}
       >
         <input
-          tabIndex={0}
           css={noteInputStyle(theme)}
           aria-label="note title"
           key="title"

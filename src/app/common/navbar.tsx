@@ -13,6 +13,7 @@ interface NavbarProps {
   setTheme: () => void;
   toggleSidebar: () => void;
   mode: boolean;
+  onSearchChange: (searchTex: string) => void;
 }
 
 const navbarStyles = (theme: Theme) => css`
@@ -46,6 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   setTheme,
   toggleSidebar,
   mode,
+  onSearchChange,
 }: NavbarProps) => {
   const [searchText, setSearchText] = useState('');
   const dispatch = useDispatch();
@@ -56,6 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     const searchQuery = window.location.hash.replace(/^#\/?|\/$/g, '').split('/');
     if (searchQuery[0] === 'search' && searchQuery[1] !== searchText) {
       setSearchText(searchQuery[1]);
+      onSearchChange(searchQuery[1]);
     }
   }, []);
 
@@ -68,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header role="banner" css={navbarStyles(theme)}>
       <IconButton key="menuicon" onClick={() => toggleSidebar()} Icon={MenuIcon} />
-      <div tabIndex={0} key="serchinput">
+      <div key="serchinput">
         <input
           css={searchInputStyles(theme)}
           type="search"
@@ -78,9 +81,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             if (value.length > 0) {
               window.location.hash = `search/${e.target.value}`;
               setSearchText(e.target.value);
+              onSearchChange(e.target.value);
             } else {
               window.location.hash = '';
               setSearchText('');
+              onSearchChange('');
             }
           }}
           placeholder="Search Notes"

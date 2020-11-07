@@ -10,6 +10,7 @@ import { Theme, ToastManager } from 'components';
 import { Navbar, Sidebar } from './common';
 import { useSelector } from 'react-redux';
 import { State } from './reducers';
+import SearchPage from './pages/search';
 
 const globalStyles = (theme: Theme) => css`
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
@@ -49,6 +50,7 @@ interface MiddlewareProps {
 const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [mode, setMode] = useState(!getBrowserTheme());
+  const [searchText, setSearchText] = useState('');
   const loading = useLoading([]);
   const toasts = useSelector((state: State) => state.globals.toastStates);
 
@@ -64,11 +66,12 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
       <Navbar
         toggleSidebar={() => setSidebarExpanded(!sidebarExpanded)}
         setTheme={() => setMode(!mode)}
+        onSearchChange={(searchText: string) => setSearchText(searchText)}
         mode={mode}
       ></Navbar>
       <div role="main" css={containerStyles}>
         <Sidebar expanded={sidebarExpanded} />
-        {children}
+        {searchText ? <SearchPage /> : children}
       </div>
       <ToastManager>
         {toasts.map((toast) => (

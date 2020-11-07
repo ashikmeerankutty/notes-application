@@ -11,7 +11,7 @@ import { Note } from '../shared/db/types';
 
 const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
   position: relative;
-  width: 250px;
+  min-width: 250px;
   min-height: 100px;
   margin: 10px 10px 10px 0px;
   padding: 10px;
@@ -66,8 +66,8 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
 
   const theme = useTheme<Theme>();
   return (
-    <div tabIndex={0} css={noteItemStyles(theme, showMenu)}>
-      <div tabIndex={0} className="noteItemStyles__pin">
+    <div css={noteItemStyles(theme, showMenu)}>
+      <div className="noteItemStyles__pin">
         <IconButton
           active={note.pinned}
           onClick={() => {
@@ -77,7 +77,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
           size={32}
         />
       </div>
-      <div tabIndex={0} css={noteDetailStyles} onClick={onSelect}>
+      <div css={noteDetailStyles} onClick={onSelect}>
         {note.title && <h4>{note.title}</h4>}
         {note.notes && <p>{note.notes}</p>}
       </div>

@@ -2,10 +2,11 @@
 import { css, jsx } from '@emotion/core';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { State } from 'src/app/reducers';
-import { Note } from 'src/app/shared/db/types';
+import { State } from '../../reducers';
+import { Note } from '../../shared/db/types';
 import ListNotes from '../../common/listNotes';
 import NewNote from '../../common/newNote';
+import { Text } from 'components';
 
 const notePageStyles = css`
   padding: 30px;
@@ -13,6 +14,10 @@ const notePageStyles = css`
   width: 100%;
   flex-direction: column;
   align-content: center;
+`;
+
+const headingStyles = css`
+  margin-top: 40px;
 `;
 
 interface NotePageProps {}
@@ -25,9 +30,13 @@ const NotePage: React.FC<NotePageProps> = () => {
   return (
     <div css={notePageStyles}>
       <NewNote key="new" />
-      <h3>Pinned Notes</h3>
+      <Text extraStyles={headingStyles} is="h4">
+        Pinned Notes
+      </Text>
       <ListNotes notes={pinnedNotes} />
-      <h3>Others</h3>
+      <Text extraStyles={headingStyles} is="h4">
+        Others
+      </Text>
       <ListNotes notes={others} />
     </div>
   );

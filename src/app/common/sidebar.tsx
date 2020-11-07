@@ -4,7 +4,7 @@ import { ArchiveIcon, DocumentIcon } from '@space-kit/icons';
 import { useTheme } from 'emotion-theming';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Theme } from '../shared/components/themes';
+import { Theme, Text } from 'components';
 
 const sidebarStyles = (theme: Theme) => css`
   position: sticky;
@@ -13,7 +13,6 @@ const sidebarStyles = (theme: Theme) => css`
   height: calc(100vh - 64px);
   background: ${theme.colors.background};
   color: ${theme.colors.text};
-  z-index: 10;
 `;
 
 const navbarStyles = (expanded: boolean, theme: Theme) => css`
@@ -82,7 +81,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
         <div className="navbar__wrapper">
           <div className="navbarStyles__item">
             <div
-              tabIndex={0}
               onClick={() => history.push('/')}
               css={navItem}
               className={`${path === '' ? 'navItem__active' : ''}`}
@@ -90,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
               <div className="navItem__icon">
                 <DocumentIcon color={theme.colors.text} size={16} />
               </div>
-              <p>Notes</p>
+              <Text>Notes</Text>
             </div>
             {/* <div
               onClick={() => history.push('/pins')}
@@ -103,7 +101,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
               <p>Pins</p>
             </div> */}
             <div
-              tabIndex={0}
               onClick={() => history.push('/archives')}
               css={navItem(theme)}
               className={`${path === 'archives' ? 'navItem__active' : ''}`}
@@ -111,7 +108,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
               <div className="navItem__icon">
                 <ArchiveIcon color={theme.colors.text} size={16} />
               </div>
-              <p>Archived</p>
+              <Text>Archived</Text>
             </div>
             {/* <div
               onClick={() => history.push('/trash')}
