@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { PinIcon, EyeOpenIcon, RefreshIcon, ArchiveIcon } from '@space-kit/icons';
 import { Modal, IconButton, Theme } from 'components';
 import { useTheme } from 'emotion-theming';
-import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showToast } from '../actions/globals';
 import { archiveNote, createNewNote, pinNote, updateNote } from '../actions/notes';
@@ -89,6 +89,8 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
   const dispatch = useDispatch();
   const theme = useTheme<Theme>();
 
+  const mainInput = useRef(null);
+
   useEffect(() => {
     if (note) {
       setUpdatedNote(note);
@@ -98,6 +100,10 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
       setArchived(note.archived);
     }
   }, [note]);
+
+  useEffect(() => {
+    mainInput.current.focus();
+  }, []);
 
   const onNoteCreate = (note: Note) => {
     const updatedNote = { ...note, pinned, archived: archived };
@@ -153,6 +159,7 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
     <Modal onClose={onClose} show={true}>
       <div css={noteTitleStyles}>
         <input
+          ref={mainInput}
           css={noteInputStyle(theme)}
           aria-label="note title"
           key="title"
