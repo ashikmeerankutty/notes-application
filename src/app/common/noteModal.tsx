@@ -1,7 +1,7 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { PinIcon, EyeOpenIcon, RefreshIcon, ArchiveIcon } from '@space-kit/icons';
-import { Modal, IconButton, Theme } from 'components';
+import { Modal, IconButton, Theme, Button } from 'components';
 import { useTheme } from 'emotion-theming';
 import { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -106,24 +106,23 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
   }, []);
 
   const onNoteCreate = (note: Note) => {
-    const updatedNote = { ...note, pinned, archived: archived };
-    dispatch(updateNote(note.id, updatedNote));
+    const updatedNote = { ...note, archived: archived, pinned: pinned };
     setUpdatedNote(updatedNote);
     window.location.hash = `note/${updatedNote.id}`;
   };
 
-  const onSave = (tit: string = '', desc: string = '') => {
+  const onSave = (updatedTitle: string = '', updatedDescription: string = '') => {
     setIsUpdating(true);
     if (!updatedNote) {
-      if (tit || desc) {
-        dispatch(createNewNote(tit, desc, onNoteCreate));
+      if (updatedTitle || updatedDescription) {
+        dispatch(createNewNote(updatedTitle, updatedDescription, onNoteCreate));
       }
     } else {
       dispatch(
         updateNote(updatedNote.id, {
           ...updatedNote,
-          title: tit || title,
-          notes: desc || description,
+          title: updatedTitle || title,
+          notes: updatedDescription || description,
           pinned,
         })
       );
@@ -138,20 +137,24 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
   };
 
   const onPinPressed = () => {
-    setPinned(!pinned);
-    if (updatedNote.id) {
-      dispatch(pinNote(updatedNote.id));
-      const pinnedMessage = !pinned ? 'Note pinned' : 'Note unpinned';
-      dispatch(showToast('success', pinnedMessage));
+    if (updateNote) {
+      setPinned(!pinned);
+      if (updatedNote.id) {
+        dispatch(pinNote(updatedNote.id, pinned));
+        const pinnedMessage = !pinned ? 'Note pinned' : 'Note unpinned';
+        dispatch(showToast('success', pinnedMessage));
+      }
     }
   };
 
   const onArchivePressed = () => {
-    setArchived(!archived);
-    if (updatedNote.id) {
-      dispatch(archiveNote(updatedNote.id));
-      const archivedMessage = !archived ? 'Note archived' : 'Note unarchived';
-      dispatch(showToast('success', archivedMessage));
+    if (updateNote) {
+      setArchived(!archived);
+      if (updatedNote.id) {
+        dispatch(archiveNote(updatedNote.id, archived));
+        const archivedMessage = !archived ? 'Note archived' : 'Note unarchived';
+        dispatch(showToast('success', archivedMessage));
+      }
     }
   };
 
@@ -204,9 +207,7 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
             Icon={ArchiveIcon}
           />
         </div>
-        <button key="add" onClick={onClose} type="button">
-          Close
-        </button>
+        <Button onClick={onClose}>Close</Button>
       </div>
     </Modal>
   );

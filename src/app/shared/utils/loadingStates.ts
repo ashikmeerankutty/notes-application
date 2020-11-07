@@ -7,6 +7,7 @@ export const watchLoadingStates = (loadings: GlobalState[], states: string[]) =>
 
 const LOADING_STATES = {
   APP_LOADING: 'APP_LOADING',
+  PAGINATION_LOADING: 'PAGINATION_LOADING',
 };
 
 export const useLoading = (watchStates: string[]) => {

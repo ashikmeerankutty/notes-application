@@ -13,6 +13,9 @@ const sidebarStyles = (theme: Theme) => css`
   height: calc(100vh - 64px);
   background: ${theme.colors.background};
   color: ${theme.colors.text};
+  @media (max-width: 425px) {
+    position: static;
+  }
 `;
 
 const navbarStyles = (expanded: boolean, theme: Theme) => css`
@@ -21,6 +24,7 @@ const navbarStyles = (expanded: boolean, theme: Theme) => css`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  background: ${theme.colors.background};
   .navbar__wrapper {
     border-right: 1px solid ${theme.colors.border};
     height: 100%;
@@ -28,6 +32,7 @@ const navbarStyles = (expanded: boolean, theme: Theme) => css`
     padding-top: 24px;
     width: ${expanded ? '100%' : '64px'};
     transition: 0.3s ease;
+    background: ${theme.colors.background};
     .navbarStyles__item {
       display: flex;
       flex-direction: column;
@@ -39,6 +44,15 @@ const navbarStyles = (expanded: boolean, theme: Theme) => css`
     &:hover {
       width: 100%;
     }
+    @media (max-width: 425px) {
+      &:hover {
+        width: ${expanded ? '100%' : '64px'};
+      }
+    }
+  }
+  @media (max-width: 425px) {
+    position: fixed;
+    z-index: 99;
   }
 `;
 

@@ -52,6 +52,7 @@ const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
 
 const noteDetailStyles = css`
   height: 100%;
+  cursor: pointer;
 `;
 
 interface NoteItemProps {
@@ -71,7 +72,10 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
         <IconButton
           active={note.pinned}
           onClick={() => {
-            dispatch(pinNote(note.id));
+            dispatch(pinNote(note.id, note.pinned));
+            dispatch(
+              showToast('success', note.pinned ? 'Note Unpinned' : 'Note Pinned')
+            );
           }}
           Icon={PinIcon}
           size={32}
@@ -92,18 +96,23 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
                 <MenuItem
                   onSelect={() => {
                     dispatch(deleteNote(note.id));
-                    dispatch(showToast('error', 'Note deleted'));
+                    dispatch(showToast('info', 'Note deleted'));
                   }}
                 >
                   Delete
                 </MenuItem>
                 <MenuItem
                   onSelect={() => {
-                    dispatch(archiveNote(note.id));
-                    dispatch(showToast('error', 'Note archived'));
+                    dispatch(archiveNote(note.id, note.archived));
+                    dispatch(
+                      showToast(
+                        'success',
+                        note.archived ? 'Note Unarchived' : 'Note Archived'
+                      )
+                    );
                   }}
                 >
-                  Archive
+                  {note.archived ? 'Unarchive' : 'Archive'}
                 </MenuItem>
               </MenuGroup>
             </Menu>

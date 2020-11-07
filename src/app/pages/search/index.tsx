@@ -14,6 +14,9 @@ const SearchPage: FunctionComponent = () => {
     width: 100%;
     flex-direction: column;
     align-content: center;
+    @media (max-width: 425px) {
+      margin-left: 64px;
+    }
   `;
 
   const headingStyles = css`

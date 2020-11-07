@@ -50,6 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSearchChange,
 }: NavbarProps) => {
   const [searchText, setSearchText] = useState('');
+
   const dispatch = useDispatch();
 
   const theme = useTheme<Theme>();
@@ -63,7 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, []);
 
   useEffect(() => {
-    dispatch(loadNotes(searchText));
+    dispatch(loadNotes(searchText, 1, 10, false));
   }, [searchText]);
 
   const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;

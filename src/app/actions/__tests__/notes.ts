@@ -102,7 +102,7 @@ describe('Note action', () => {
       sampleNotes[0].notes
     );
     const archivedNote = { ...newNote, archived: true };
-    expect(archiveNote(newNote.id)).toEqual({
+    expect(archiveNote(newNote.id, true)).toEqual({
       type: UPDATE_NOTE,
       note: archivedNote,
     });
@@ -114,7 +114,7 @@ describe('Note action', () => {
       sampleNotes[0].notes
     );
     const pinnedNote = { ...newNote, pinned: true };
-    expect(pinNote(newNote.id)).toEqual({
+    expect(pinNote(newNote.id, true)).toEqual({
       type: UPDATE_NOTE,
       note: pinnedNote,
     });

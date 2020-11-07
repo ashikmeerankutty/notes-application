@@ -2,8 +2,17 @@ import { getItemFromStorage, setItemToStorage } from './storage';
 import { Note } from './types';
 import { v4 as uuid4 } from 'uuid';
 
-export const getNotes = (query?: string, page = 1, pageSize = 10) => {
-  let notes = getItemFromStorage('notes') || [];
+export const getNotes = (
+  query?: string,
+  page = 1,
+  pageSize?: number,
+  filterPinned = false
+) => {
+  let notes =
+    getItemFromStorage('notes').sort(
+      (a: Note, b: Note) =>
+        new Date(b.created).getTime() - new Date(a.created).getTime()
+    ) || [];
   if (query) {
     notes = notes.filter(
       (note: Note) =>
@@ -12,7 +21,25 @@ export const getNotes = (query?: string, page = 1, pageSize = 10) => {
     );
   }
 
-  return notes.slice((page - 1) * pageSize, page * pageSize);
+  if (filterPinned) {
+    notes = notes.filter((note: Note) => !note.pinned);
+  }
+
+  if (!pageSize) {
+    return notes;
+  }
+
+  return notes.slice(0, page * pageSize);
+};
+
+export const getPinnedNotes = () => {
+  const notes = getItemFromStorage('notes') || [];
+  return notes.filter((note: Note) => note.pinned);
+};
+
+export const getArchivedNotes = () => {
+  const notes = getItemFromStorage('notes') || [];
+  return notes.filter((note: Note) => note.archived);
 };
 
 export const addNote = (note: Note) => {

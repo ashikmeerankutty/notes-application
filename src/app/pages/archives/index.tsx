@@ -1,11 +1,11 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { State } from 'src/app/reducers';
-import { Note } from 'src/app/shared/db/types';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../reducers';
 import ListNotes from '../../common/listNotes';
 import { Text } from 'components';
+import { loadArchivedNotes } from '../../actions/notes';
 
 const archivePageStyles = css`
   padding: 30px;
@@ -13,6 +13,9 @@ const archivePageStyles = css`
   width: 100%;
   flex-direction: column;
   align-content: center;
+  @media (max-width: 425px) {
+    margin-left: 64px;
+  }
 `;
 
 const headingStyles = css`
@@ -20,9 +23,13 @@ const headingStyles = css`
 `;
 
 const ArchivePage: React.FC = () => {
-  const notes = useSelector((state: State) =>
-    state.notes.notes.filter((note: Note) => note.archived)
-  );
+  const dispatch = useDispatch();
+
+  const notes = useSelector((state: State) => state.notes.archivedNotes);
+
+  useEffect(() => {
+    dispatch(loadArchivedNotes());
+  }, []);
 
   return (
     <div css={archivePageStyles}>

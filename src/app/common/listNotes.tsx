@@ -41,7 +41,7 @@ const ListNotes: React.FC<ListNotesProps> = ({ notes }: ListNotesProps) => {
       );
       setSelectedNote(activeNote);
     }
-  }, []);
+  }, [notes]);
 
   return (
     <div css={listNotesWrapperStyles}>
