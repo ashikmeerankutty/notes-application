@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Middleware from './middleware';
-import { Spinner } from './shared/components/spinner/spinner';
+import { Spinner } from 'components';
 
 const Dashboard = React.lazy(() => import('./pages/notes'));
 const Archives = React.lazy(() => import('./pages/archives'));
