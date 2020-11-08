@@ -111,7 +111,7 @@ const NoteItem: React.FC<NoteItemProps> = ({
                 <MenuItem
                   onSelect={() => {
                     dispatch(deleteNote(note.id));
-                    dispatch(showToast('info', 'Note deleted'));
+                    dispatch(showToast('error', 'Note deleted'));
                   }}
                 >
                   Delete
