@@ -5,13 +5,16 @@ import { IconButton, Menu, MenuGroup, MenuItem, Popover, Theme } from 'component
 import { useTheme } from 'emotion-theming';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteNote, archiveNote, pinNote } from '../../actions/notes';
-import { Note } from '../../shared/db/types';
+import { showToast } from '../actions/globals';
+import { deleteNote, archiveNote, pinNote } from '../actions/notes';
+import { Note } from '../shared/db/types';
+import ErrorBoundary from './error';
+import Markdown from './markdown';
 
 const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
   position: relative;
   width: 250px;
-  min-height: 100px;
+  height: 120px;
   margin: 10px 10px 10px 0px;
   padding: 10px;
   color: ${theme.colors.text};
@@ -51,14 +54,21 @@ const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
 
 const noteDetailStyles = css`
   height: 100%;
+  cursor: pointer;
+  overflow: scroll;
 `;
 
 interface NoteItemProps {
   note: Note;
   onSelect: () => void;
+  search: boolean;
 }
 
-const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) => {
+const NoteItem: React.FC<NoteItemProps> = ({
+  note,
+  onSelect,
+  search,
+}: NoteItemProps) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const dispatch = useDispatch();
@@ -70,7 +80,10 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
         <IconButton
           active={note.pinned}
           onClick={() => {
-            dispatch(pinNote(note.id));
+            dispatch(pinNote(note.id, note.pinned, search));
+            dispatch(
+              showToast('success', note.pinned ? 'Note Unpinned' : 'Note Pinned')
+            );
           }}
           Icon={PinIcon}
           size={32}
@@ -78,7 +91,14 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
       </div>
       <div css={noteDetailStyles} onClick={onSelect}>
         {note.title && <h4>{note.title}</h4>}
-        {note.notes && <p>{note.notes}</p>}
+        {note.notes && (
+          <ErrorBoundary
+            message="Error rendering markdown"
+            detailMessage="Some error occured while rendering markdown. Please check your markdown for any errors"
+          >
+            <Markdown text={note.notes}></Markdown>
+          </ErrorBoundary>
+        )}
       </div>
       <div className="noteItemStyles__toolbar">
         <Popover
@@ -91,16 +111,23 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
                 <MenuItem
                   onSelect={() => {
                     dispatch(deleteNote(note.id));
+                    dispatch(showToast('info', 'Note deleted'));
                   }}
                 >
                   Delete
                 </MenuItem>
                 <MenuItem
                   onSelect={() => {
-                    dispatch(archiveNote(note.id));
+                    dispatch(archiveNote(note.id, note.archived));
+                    dispatch(
+                      showToast(
+                        'success',
+                        note.archived ? 'Note Unarchived' : 'Note Archived'
+                      )
+                    );
                   }}
                 >
-                  Archive
+                  {note.archived ? 'Unarchive' : 'Archive'}
                 </MenuItem>
               </MenuGroup>
             </Menu>

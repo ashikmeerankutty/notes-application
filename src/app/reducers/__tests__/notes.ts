@@ -10,6 +10,9 @@ import notesReducer, { NoteAction, NoteState } from '../notes';
 describe('Notes reducers', () => {
   const initialState: NoteState = {
     notes: [],
+    pinnedNotes: [],
+    archivedNotes: [],
+    lastLoadedPage: 1,
   };
 
   const sampleNotes: Note[] = [
@@ -32,6 +35,9 @@ describe('Notes reducers', () => {
 
     const expectedState: NoteState = {
       notes: [sampleNotes[0]],
+      pinnedNotes: [],
+      archivedNotes: [],
+      lastLoadedPage: 1,
     };
 
     expect(notesReducer(initialState, createNoteAction)).toEqual(expectedState);
@@ -43,16 +49,35 @@ describe('Notes reducers', () => {
       noteId: '1',
     };
 
-    expect(notesReducer({ notes: sampleNotes }, deleteNoteAction)).toEqual({
-      notes: [],
-    });
+    expect(
+      notesReducer(
+        {
+          notes: sampleNotes,
+          pinnedNotes: [],
+          archivedNotes: [],
+          lastLoadedPage: 1,
+        },
+        deleteNoteAction
+      )
+    ).toEqual({ ...initialState });
 
     const deleteNoteAction2: NoteAction = {
       type: DELETE_NOTE,
       noteId: '2',
     };
 
-    expect(notesReducer({ notes: sampleNotes }, deleteNoteAction2)).toEqual({
+    expect(
+      notesReducer(
+        {
+          notes: sampleNotes,
+          pinnedNotes: [],
+          archivedNotes: [],
+          lastLoadedPage: 1,
+        },
+        deleteNoteAction2
+      )
+    ).toEqual({
+      ...initialState,
       notes: sampleNotes,
     });
   });
@@ -72,7 +97,18 @@ describe('Notes reducers', () => {
       note: updatedNote,
     };
 
-    expect(notesReducer({ notes: sampleNotes }, updateNoteAction)).toEqual({
+    expect(
+      notesReducer(
+        {
+          notes: sampleNotes,
+          pinnedNotes: [],
+          archivedNotes: [],
+          lastLoadedPage: 1,
+        },
+        updateNoteAction
+      )
+    ).toEqual({
+      ...initialState,
       notes: [updatedNote],
     });
   });
@@ -84,7 +120,9 @@ describe('Notes reducers', () => {
     };
 
     expect(notesReducer(initialState, loadNoteAction)).toEqual({
+      ...initialState,
       notes: sampleNotes,
+      lastLoadedPage: undefined,
     });
   });
 });

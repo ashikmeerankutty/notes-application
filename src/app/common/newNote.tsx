@@ -2,9 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import { Theme } from 'components';
 import { useTheme } from 'emotion-theming';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { loadNotes } from '../../actions/notes';
+import React, { useState } from 'react';
 import NoteModal, { noteInputStyle } from './noteModal';
 
 const newNoteStyles = (theme: Theme) => css`
@@ -26,12 +24,6 @@ const NewNote: React.FC<NewNoteProps> = () => {
 
   const theme = useTheme<Theme>();
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadNotes('', 1, 100));
-  }, [dispatch]);
-
   return (
     <div>
       <div
@@ -39,6 +31,7 @@ const NewNote: React.FC<NewNoteProps> = () => {
         onClick={() => {
           setShowModal(true);
         }}
+        onKeyDown={() => setShowModal(true)}
       >
         <input
           css={noteInputStyle(theme)}

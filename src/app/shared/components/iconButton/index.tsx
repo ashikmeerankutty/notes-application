@@ -6,7 +6,7 @@ import React, { HTMLAttributes } from 'react';
 import { Theme } from '../themes';
 
 const iconButtonStyles = (theme: Theme, active: boolean, size: number) => css`
-  background-color: ${active ? theme.colors.primaryHover : theme.colors.background};
+  background-color: ${active ? theme.colors.primary : theme.colors.background};
   text-decoration: none;
   border: none;
   outline: none;
@@ -39,7 +39,10 @@ export const IconButton: React.FC<IconButtonProps> = ({
   const theme = useTheme<Theme>();
   return (
     <button css={iconButtonStyles(theme, active, size)} {...rest}>
-      <Icon color={theme.colors.text} size={16} />
+      <Icon
+        color={active ? theme.colors.background : theme.colors.primary}
+        size={16}
+      />
     </button>
   );
 };

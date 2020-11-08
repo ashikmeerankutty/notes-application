@@ -4,10 +4,14 @@ import React, { ReactNode, useState } from 'react';
 import { Global, css } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
 import { useLoading } from './shared/utils/loadingStates';
-import { lightTheme, darkTheme } from 'components';
+import { lightTheme, darkTheme, Toast } from 'components';
 import { getBrowserTheme, THEMES } from './shared/utils/theme';
-import { Theme } from 'components';
+import { Theme, ToastManager } from 'components';
 import { Navbar, Sidebar } from './common';
+import { useSelector } from 'react-redux';
+import { State } from './reducers';
+import SearchPage from './pages/search';
+import ErrorBoundary from './common/error';
 
 const globalStyles = (theme: Theme) => css`
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
@@ -32,6 +36,7 @@ const globalStyles = (theme: Theme) => css`
   p {
     padding: 0;
     margin: 0;
+    word-wrap: break-word;
   }
 `;
 
@@ -47,8 +52,9 @@ interface MiddlewareProps {
 const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [mode, setMode] = useState(!getBrowserTheme());
+  const [searchText, setSearchText] = useState('');
   const loading = useLoading([]);
-
+  const toasts = useSelector((state: State) => state.globals.toastStates);
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -56,18 +62,28 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
   const theme = mode === THEMES.light ? lightTheme : darkTheme;
 
   return (
-    <ThemeProvider theme={theme}>
-      <Global styles={globalStyles(theme)} />
-      <Navbar
-        toggleSidebar={() => setSidebarExpanded(!sidebarExpanded)}
-        setTheme={() => setMode(!mode)}
-        mode={mode}
-      ></Navbar>
-      <div role="main" css={containerStyles}>
-        <Sidebar expanded={sidebarExpanded} />
-        {children}
-      </div>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <Global styles={globalStyles(theme)} />
+        <Navbar
+          toggleSidebar={() => setSidebarExpanded(!sidebarExpanded)}
+          setTheme={() => setMode(!mode)}
+          onSearchChange={(searchText: string) => setSearchText(searchText)}
+          mode={mode}
+        ></Navbar>
+        <div role="main" css={containerStyles}>
+          <Sidebar expanded={sidebarExpanded} />
+          {searchText ? <SearchPage /> : children}
+        </div>
+        <ToastManager>
+          {toasts.map((toast) => (
+            <Toast key={toast.id} type={toast.state}>
+              {toast.message}
+            </Toast>
+          ))}
+        </ToastManager>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 

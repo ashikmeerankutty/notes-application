@@ -2,12 +2,18 @@ import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Middleware from './middleware';
 
-const Dashboard = React.lazy(() => import('./pages/home'));
+const Dashboard = React.lazy(() => import('./pages/notes'));
+const Archives = React.lazy(() => import('./pages/archives'));
 
 const routes = [
   {
     path: '/',
     component: Dashboard,
+    isExact: false,
+  },
+  {
+    path: 'archives',
+    component: Archives,
     isExact: false,
   },
 ];

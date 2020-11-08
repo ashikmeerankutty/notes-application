@@ -1,5 +1,12 @@
 import { Note } from '../../shared/db/types';
-import { CREATE_NOTE, DELETE_NOTE, LOAD_NOTES, UPDATE_NOTE } from '../actionTypes';
+import {
+  CREATE_NOTE,
+  DELETE_NOTE,
+  LOAD_NOTES,
+  UNARCHIVE_NOTE,
+  UNPIN_NOTE,
+  UPDATE_NOTE,
+} from '../actionTypes';
 import {
   archiveNote,
   createNewNote,
@@ -25,7 +32,9 @@ describe('Note action', () => {
 
   it('create new note', () => {
     const spy = jest.spyOn(notesDb, 'createNewNote');
-    expect(createNewNote(sampleNotes[0].title, sampleNotes[0].notes)).toEqual({
+    expect(
+      createNewNote(sampleNotes[0].title, sampleNotes[0].notes, () => {})
+    ).toEqual({
       type: CREATE_NOTE,
       note: expect.objectContaining({
         id: expect.any(String),
@@ -102,8 +111,8 @@ describe('Note action', () => {
       sampleNotes[0].notes
     );
     const archivedNote = { ...newNote, archived: true };
-    expect(archiveNote(newNote.id)).toEqual({
-      type: UPDATE_NOTE,
+    expect(archiveNote(newNote.id, true)).toEqual({
+      type: UNARCHIVE_NOTE,
       note: archivedNote,
     });
   });
@@ -114,8 +123,8 @@ describe('Note action', () => {
       sampleNotes[0].notes
     );
     const pinnedNote = { ...newNote, pinned: true };
-    expect(pinNote(newNote.id)).toEqual({
-      type: UPDATE_NOTE,
+    expect(pinNote(newNote.id, true)).toEqual({
+      type: UNPIN_NOTE,
       note: pinnedNote,
     });
   });

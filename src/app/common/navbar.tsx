@@ -2,17 +2,17 @@
 import { css, jsx } from '@emotion/core';
 import { LightbulbIcon, MenuIcon, MoonIcon } from '@space-kit/icons';
 import { useTheme } from 'emotion-theming';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { loadNotes } from '../actions/notes';
+import React from 'react';
 import { IconButton } from '../shared/components/iconButton';
 import { Theme } from '../shared/components/themes';
 import { THEMES } from '../shared/utils/theme';
+import SearchBar from './searchbar';
 
 interface NavbarProps {
   setTheme: () => void;
   toggleSidebar: () => void;
   mode: boolean;
+  onSearchChange: (searchTex: string) => void;
 }
 
 const navbarStyles = (theme: Theme) => css`
@@ -26,39 +26,25 @@ const navbarStyles = (theme: Theme) => css`
   align-items: center;
   padding: 8px;
   justify-content: space-between;
+  background: ${theme.colors.background};
+  z-index: 999;
 `;
 
 export const Navbar: React.FC<NavbarProps> = ({
   setTheme,
   toggleSidebar,
   mode,
+  onSearchChange,
 }: NavbarProps) => {
-  const [searchText, setSearchText] = useState('');
-  const dispatch = useDispatch();
+  const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;
 
   const theme = useTheme<Theme>();
-
-  const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      dispatch(loadNotes(searchText));
-    }
-  };
-
-  const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;
 
   return (
     <header role="banner" css={navbarStyles(theme)}>
       <IconButton key="menuicon" onClick={() => toggleSidebar()} Icon={MenuIcon} />
-      <div key="serchinput">
-        <input
-          type="search"
-          value={searchText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSearchText(e.target.value)
-          }
-          placeholder="Search Notes"
-          onKeyDown={onSearch}
-        />
+      <div>
+        <SearchBar onSearchChange={onSearchChange} />
       </div>
       <IconButton
         key="themeicon"
