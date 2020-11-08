@@ -16,17 +16,24 @@ const listNotesWrapperStyles = css`
 interface ListNotesProps {
   notes: Note[];
   onSelectNote: any;
+  search: boolean;
 }
 
 const ListNotes: React.FC<ListNotesProps> = ({
   notes,
   onSelectNote,
+  search,
 }: ListNotesProps) => {
   return (
     <div css={listNotesWrapperStyles}>
       <div css={listNotesStyles}>
         {notes.map((note: Note) => (
-          <NoteItem key={note.id} onSelect={() => onSelectNote(note)} note={note} />
+          <NoteItem
+            key={note.id}
+            onSelect={() => onSelectNote(note)}
+            note={note}
+            search={search}
+          />
         ))}
       </div>
     </div>

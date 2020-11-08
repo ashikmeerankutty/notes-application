@@ -60,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     dispatch(loadNotes(searchText, 1, null, false));
   };
 
-  const delayedLoadNotes = useCallback(debounce(loadQueryNotes, 500), []);
+  const delayedLoadNotes = useCallback(debounce(loadQueryNotes, 100), []);
 
   useEffect(() => {
     const searchQuery = window.location.hash.replace(/^#\/?|\/$/g, '').split('/');
@@ -74,7 +74,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     if (searchText) {
       delayedLoadNotes(searchText);
     } else {
-      console.log("here")
       dispatch(loadNotes('', 1, 10));
     }
   }, [searchText]);

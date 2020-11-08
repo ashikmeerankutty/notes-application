@@ -35,9 +35,7 @@ const NotePage: React.FC<NotePageProps> = () => {
   const [selectedNote, setSelectedNote] = useState<Note>(null);
 
   const { notes, page } = useSelector((state: State) => ({
-    notes: state.notes.notes
-      .filter((note: Note) => !note.archived)
-      .filter((note: Note) => !note.pinned),
+    notes: state.notes.notes.filter((note: Note) => !note.archived),
     page: state.notes.lastLoadedPage,
   }));
 
@@ -85,7 +83,7 @@ const NotePage: React.FC<NotePageProps> = () => {
           <Text extraStyles={headingStyles} is="h4">
             Pinned
           </Text>
-          <ListNotes notes={pinnedNotes} onSelectNote={selectNote} />
+          <ListNotes notes={pinnedNotes} onSelectNote={selectNote} search={false} />
           <Text extraStyles={headingStyles} is="h4">
             Others
           </Text>
@@ -93,7 +91,7 @@ const NotePage: React.FC<NotePageProps> = () => {
       ) : null}
       {notes.length ? (
         <React.Fragment>
-          <ListNotes notes={notes} onSelectNote={selectNote} />
+          <ListNotes notes={notes} onSelectNote={selectNote} search={false} />
           <div css={loadMoreStyles}>
             <Button onClick={loadMore}>Load More</Button>
           </div>

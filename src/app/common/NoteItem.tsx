@@ -60,9 +60,15 @@ const noteDetailStyles = css`
 interface NoteItemProps {
   note: Note;
   onSelect: () => void;
+  search: boolean;
 }
 
-const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) => {
+const NoteItem: React.FC<NoteItemProps> = ({
+  note,
+  onSelect,
+  search,
+}: NoteItemProps) => {
+  console.log('Note Item', search);
   const [showMenu, setShowMenu] = useState(false);
 
   const dispatch = useDispatch();
@@ -74,7 +80,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
         <IconButton
           active={note.pinned}
           onClick={() => {
-            dispatch(pinNote(note.id, note.pinned));
+            dispatch(pinNote(note.id, note.pinned, search));
             dispatch(
               showToast('success', note.pinned ? 'Note Unpinned' : 'Note Pinned')
             );

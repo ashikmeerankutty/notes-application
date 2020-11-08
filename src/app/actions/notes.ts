@@ -12,6 +12,7 @@ import {
 } from './actionTypes';
 import * as notesDb from '../shared/db/notes';
 import { Note } from '../shared/db/types';
+import { Dispatch } from 'react';
 
 export const createNewNote = (
   title: string,
@@ -38,9 +39,9 @@ export const loadNotes = (
   page?: number,
   pageSize?: number,
   filterPinned?: boolean
-) => {
+) => (dispatch: Dispatch<any>) => {
   const notes = notesDb.getNotes(query, page, pageSize, filterPinned);
-  return { type: LOAD_NOTES, notes, page };
+  return dispatch({ type: LOAD_NOTES, notes, page });
 };
 
 export const loadPinnedNotes = () => {
@@ -61,10 +62,10 @@ export const archiveNote = (noteId: string, status: boolean) => {
   return { type: UNARCHIVE_NOTE, note: archivedNote };
 };
 
-export const pinNote = (noteId: string, status: boolean) => {
+export const pinNote = (noteId: string, status: boolean, search?: boolean) => {
   const updatedNote = notesDb.pinNote(noteId);
   if (!status) {
-    return { type: PIN_NOTE, note: updatedNote };
+    return { type: PIN_NOTE, note: updatedNote, search };
   }
-  return { type: UNPIN_NOTE, note: updatedNote };
+  return { type: UNPIN_NOTE, note: updatedNote, search };
 };

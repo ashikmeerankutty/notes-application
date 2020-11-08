@@ -54,7 +54,7 @@ const SearchPage: FunctionComponent = () => {
       {!notes.length ? (
         <EmptyBlock description="No notes found" />
       ) : (
-        <ListNotes onSelectNote={selectNote} notes={notes} key="list notes" />
+        <ListNotes onSelectNote={selectNote} notes={notes} key="list notes" search />
       )}
       {selectedNote && <NoteModal note={selectedNote} onClose={deselectNote} />}
     </div>

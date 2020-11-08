@@ -25,6 +25,7 @@ export interface NoteAction {
   noteId?: string;
   page?: number;
   notes?: Note[];
+  search?: boolean;
 }
 
 const intialState: NoteState = {
@@ -67,6 +68,14 @@ const notes = (state = intialState, action: NoteAction) => {
       };
 
     case PIN_NOTE:
+      if (action.search) {
+        return {
+          ...state,
+          notes: state.notes.map((note) =>
+            note.id === action.note.id ? action.note : note
+          ),
+        };
+      }
       if (!state.notes.find((note) => note.id === action.note.id)) {
         return {
           ...state,
@@ -83,6 +92,14 @@ const notes = (state = intialState, action: NoteAction) => {
       };
 
     case UNPIN_NOTE:
+      if (action.search) {
+        return {
+          ...state,
+          notes: state.notes.map((note) =>
+            note.id === action.note.id ? action.note : note
+          ),
+        };
+      }
       if (state.notes.find((note) => note.id === action.note.id)) {
         return {
           ...state,
