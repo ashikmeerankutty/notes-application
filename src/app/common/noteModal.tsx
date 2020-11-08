@@ -182,7 +182,7 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
       <div css={noteViewStyles}>
         <textarea
           css={noteDescriptionStyles(theme)}
-          rows={10}
+          rows={15}
           aria-label="note"
           placeholder="Take a note.."
           key="note"
