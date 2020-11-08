@@ -8,11 +8,12 @@ import { useDispatch } from 'react-redux';
 import { showToast } from '../actions/globals';
 import { deleteNote, archiveNote, pinNote } from '../actions/notes';
 import { Note } from '../shared/db/types';
+import Markdown from './markdown';
 
 const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
   position: relative;
   min-width: 250px;
-  min-height: 100px;
+  height: 120px;
   margin: 10px 10px 10px 0px;
   padding: 10px;
   color: ${theme.colors.text};
@@ -53,6 +54,7 @@ const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
 const noteDetailStyles = css`
   height: 100%;
   cursor: pointer;
+  overflow: scroll;
 `;
 
 interface NoteItemProps {
@@ -83,7 +85,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }: NoteItemProps) =>
       </div>
       <div css={noteDetailStyles} onClick={onSelect}>
         {note.title && <h4>{note.title}</h4>}
-        {note.notes && <p>{note.notes}</p>}
+        {note.notes && <Markdown text={note.notes}></Markdown>}
       </div>
       <div className="noteItemStyles__toolbar">
         <Popover
