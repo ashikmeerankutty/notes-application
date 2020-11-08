@@ -68,7 +68,6 @@ const NoteItem: React.FC<NoteItemProps> = ({
   onSelect,
   search,
 }: NoteItemProps) => {
-  console.log('Note Item', search);
   const [showMenu, setShowMenu] = useState(false);
 
   const dispatch = useDispatch();

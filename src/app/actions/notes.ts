@@ -1,10 +1,12 @@
 import {
   ARCHIVE_NOTE,
+  CLEAR_NOTES,
   CREATE_NOTE,
   DELETE_NOTE,
   LOAD_ARCHIVED_NOTES,
   LOAD_NOTES,
   LOAD_PINNED_NOTES,
+  LOAD_SEARCH_NOTES,
   PIN_NOTE,
   UNARCHIVE_NOTE,
   UNPIN_NOTE,
@@ -43,6 +45,20 @@ export const loadNotes = (
   const notes = notesDb.getNotes(query, page, pageSize, filterPinned);
   return dispatch({ type: LOAD_NOTES, notes, page });
 };
+
+export const loadSearchResults = (query?: string) => (dispatch: Dispatch<any>) => {
+  // console.log(query);
+  // if (query === '') {
+  //   console.log('Coming..');
+  //   const notes = notesDb.getNotes(query, 1, 10, true);
+  //   dispatch({ type: CLEAR_NOTES });
+  //   return dispatch({ type: LOAD_NOTES, notes, page: 1 });
+  // }
+  const notes = notesDb.getNotes(query, 1, null, false);
+  return dispatch({ type: LOAD_SEARCH_NOTES, notes });
+};
+
+export const clearNotes = () => ({ type: CLEAR_NOTES });
 
 export const loadPinnedNotes = () => {
   const notes = notesDb.getPinnedNotes();

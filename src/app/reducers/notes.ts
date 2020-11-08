@@ -1,10 +1,12 @@
 import {
   ARCHIVE_NOTE,
+  CLEAR_NOTES,
   CREATE_NOTE,
   DELETE_NOTE,
   LOAD_ARCHIVED_NOTES,
   LOAD_NOTES,
   LOAD_PINNED_NOTES,
+  LOAD_SEARCH_NOTES,
   PIN_NOTE,
   UNARCHIVE_NOTE,
   UNPIN_NOTE,
@@ -141,8 +143,14 @@ const notes = (state = intialState, action: NoteAction) => {
     case LOAD_NOTES:
       return {
         ...state,
-        notes: action.notes,
+        notes: [...state.notes, ...action.notes],
         lastLoadedPage: action.page,
+      };
+
+    case LOAD_SEARCH_NOTES:
+      return {
+        ...state,
+        notes: action.notes,
       };
 
     case LOAD_PINNED_NOTES:
@@ -154,6 +162,12 @@ const notes = (state = intialState, action: NoteAction) => {
       return {
         ...state,
         archivedNotes: action.notes,
+      };
+
+    case CLEAR_NOTES:
+      return {
+        ...state,
+        notes: [],
       };
 
     default:

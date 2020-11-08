@@ -30,7 +30,7 @@ export const getNotes = (
     return notes;
   }
 
-  return notes.slice(0, page * pageSize);
+  return notes.slice((page - 1) * pageSize, page * pageSize);
 };
 
 export const getPinnedNotes = () => {

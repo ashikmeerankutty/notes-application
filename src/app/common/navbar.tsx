@@ -2,13 +2,11 @@
 import { css, jsx } from '@emotion/core';
 import { LightbulbIcon, MenuIcon, MoonIcon } from '@space-kit/icons';
 import { useTheme } from 'emotion-theming';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { loadNotes } from '../actions/notes';
+import React from 'react';
 import { IconButton } from '../shared/components/iconButton';
 import { Theme } from '../shared/components/themes';
 import { THEMES } from '../shared/utils/theme';
-import { debounce } from 'lodash';
+import SearchBar from './searchbar';
 
 interface NavbarProps {
   setTheme: () => void;
@@ -32,76 +30,21 @@ const navbarStyles = (theme: Theme) => css`
   z-index: 999;
 `;
 
-const searchInputStyles = (theme: Theme) => css`
-  max-width: 300px;
-  border: 1px solid ${theme.colors.border};
-  outline: none;
-  padding: 10px 20px;
-  font-size: 15px;
-  border-radius: 5px;
-  font-weight: 500;
-  background: ${theme.colors.background};
-  color: ${theme.colors.text};
-`;
-
 export const Navbar: React.FC<NavbarProps> = ({
   setTheme,
   toggleSidebar,
   mode,
   onSearchChange,
 }: NavbarProps) => {
-  const [searchText, setSearchText] = useState('');
-
-  const dispatch = useDispatch();
+  const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;
 
   const theme = useTheme<Theme>();
-
-  const loadQueryNotes = (searchText: string) => {
-    dispatch(loadNotes(searchText, 1, null, false));
-  };
-
-  const delayedLoadNotes = useCallback(debounce(loadQueryNotes, 100), []);
-
-  useEffect(() => {
-    const searchQuery = window.location.hash.replace(/^#\/?|\/$/g, '').split('/');
-    if (searchQuery[0] === 'search' && searchQuery[1] !== searchText) {
-      setSearchText(decodeURI(searchQuery[1]));
-      onSearchChange(decodeURI(searchQuery[1]));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (searchText) {
-      delayedLoadNotes(searchText);
-    } else {
-      dispatch(loadNotes('', 1, 10));
-    }
-  }, [searchText]);
-
-  const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;
 
   return (
     <header role="banner" css={navbarStyles(theme)}>
       <IconButton key="menuicon" onClick={() => toggleSidebar()} Icon={MenuIcon} />
-      <div key="serchinput">
-        <input
-          css={searchInputStyles(theme)}
-          type="search"
-          value={searchText}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            if (value.length > 0) {
-              window.location.hash = `search/${e.target.value}`;
-              setSearchText(e.target.value);
-              onSearchChange(e.target.value);
-            } else {
-              window.location.hash = '';
-              setSearchText('');
-              onSearchChange('');
-            }
-          }}
-          placeholder="Search Notes"
-        />
+      <div>
+        <SearchBar onSearchChange={onSearchChange} />
       </div>
       <IconButton
         key="themeicon"
