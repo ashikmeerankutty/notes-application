@@ -54,6 +54,7 @@ const SearchBar: React.FC<SearchbarProps> = ({ onSearchChange }: SearchbarProps)
 
   return (
     <input
+      aria-label="searchbar"
       css={searchInputStyles(theme)}
       type="search"
       value={searchText}
