@@ -8,8 +8,9 @@ export const getNotes = (
   pageSize?: number,
   filterPinned = false
 ) => {
-  let notes =
-    getItemFromStorage('notes').sort(
+  let notes = getItemFromStorage('notes') || [];
+  notes =
+    notes.sort(
       (a: Note, b: Note) =>
         new Date(b.created).getTime() - new Date(a.created).getTime()
     ) || [];

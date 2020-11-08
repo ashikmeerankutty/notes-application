@@ -46,6 +46,10 @@ const notes = (state = intialState, action: NoteAction) => {
       return {
         ...state,
         notes: state.notes.filter((note) => note.id !== action.noteId),
+        pinnedNotes: state.pinnedNotes.filter((note) => note.id !== action.noteId),
+        archivedNotes: state.archivedNotes.filter(
+          (note) => note.id !== action.noteId
+        ),
       };
 
     case UPDATE_NOTE:
