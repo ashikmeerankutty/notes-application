@@ -15,6 +15,7 @@ const newNoteStyles = (theme: Theme) => css`
   border-radius: 5px;
   border: 1px solid ${theme.colors.border};
   cursor: text;
+  margin-bottom: 50px;
 `;
 
 interface NewNoteProps {}

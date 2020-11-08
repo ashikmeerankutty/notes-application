@@ -19,7 +19,7 @@ const wrapperStyles = css`
   align-items: flex-start;
 `;
 
-const modalStyles = (width: number = 560, theme: Theme) => css`
+const modalStyles = (width: number = 600, theme: Theme) => css`
   display: flex;
   flex-direction: column;
   background-color: ${theme.colors.background};
