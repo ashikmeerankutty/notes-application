@@ -46,15 +46,27 @@ const SearchPage: FunctionComponent = () => {
     }
   }, [notes]);
 
+  const archivedNotes = notes.filter((note: Note) => note.archived);
+  const otherNotes = notes.filter((note: Note) => !note.archived);
+
   return (
     <div css={searchPageStyles}>
-      <Text extraStyles={headingStyles} is="h4">
-        Search results
+      <Text extraStyles={headingStyles} is="h3">
+        Search results...
       </Text>
       {!notes.length ? (
         <EmptyBlock description="No notes found" />
       ) : (
-        <ListNotes onSelectNote={selectNote} notes={notes} key="list notes" search />
+        <div>
+          <Text extraStyles={headingStyles} is="h4">
+            Archived
+          </Text>
+          <ListNotes onSelectNote={selectNote} notes={archivedNotes} search />
+          <Text extraStyles={headingStyles} is="h4">
+            Others
+          </Text>
+          <ListNotes onSelectNote={selectNote} notes={otherNotes} search />
+        </div>
       )}
       {selectedNote && <NoteModal note={selectedNote} onClose={deselectNote} />}
     </div>
