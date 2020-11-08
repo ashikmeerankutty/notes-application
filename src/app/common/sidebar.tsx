@@ -103,16 +103,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
               </div>
               <Text>Notes</Text>
             </div>
-            {/* <div
-              onClick={() => history.push('/pins')}
-              css={navItem}
-              className={`${path === 'pins' ? 'navItem__active' : ''}`}
-            >
-              <div className="navItem__icon">
-                <PinIcon color={theme.colors.text} size={16} />
-              </div>
-              <p>Pins</p>
-            </div> */}
             <div
               onClick={() => history.push('/archives')}
               css={navItem(theme)}
@@ -123,16 +113,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ expanded }: SidebarProps) => {
               </div>
               <Text>Archived</Text>
             </div>
-            {/* <div
-              onClick={() => history.push('/trash')}
-              css={navItem(theme)}
-              className={`${path === 'trash' ? 'navItem__active' : ''}`}
-            >
-              <div className="navItem__icon">
-                <TrashIcon color={theme.colors.text} size={16} />
-              </div>
-              <p>Trash</p>
-            </div> */}
           </div>
         </div>
       </nav>
