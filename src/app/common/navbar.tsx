@@ -2,12 +2,13 @@
 import { css, jsx } from '@emotion/core';
 import { LightbulbIcon, MenuIcon, MoonIcon } from '@space-kit/icons';
 import { useTheme } from 'emotion-theming';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadNotes } from '../actions/notes';
 import { IconButton } from '../shared/components/iconButton';
 import { Theme } from '../shared/components/themes';
 import { THEMES } from '../shared/utils/theme';
+import { debounce } from 'lodash';
 
 interface NavbarProps {
   setTheme: () => void;
@@ -55,6 +56,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const theme = useTheme<Theme>();
 
+  const loadQueryNotes = (searchText: string) => {
+    dispatch(loadNotes(searchText, 1, 10, false));
+  };
+
+  const delayedLoadNotes = useCallback(debounce(loadQueryNotes, 500), []);
+
   useEffect(() => {
     const searchQuery = window.location.hash.replace(/^#\/?|\/$/g, '').split('/');
     if (searchQuery[0] === 'search' && searchQuery[1] !== searchText) {
@@ -64,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, []);
 
   useEffect(() => {
-    dispatch(loadNotes(searchText, 1, 10, false));
+    delayedLoadNotes(searchText);
   }, [searchText]);
 
   const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;
