@@ -3,14 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { PinIcon, RefreshIcon, ArchiveIcon } from '@space-kit/icons';
 import { Modal, IconButton, Theme, Button } from 'components';
 import { useTheme } from 'emotion-theming';
-import {
-  ChangeEvent,
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showToast } from '../actions/globals';
 import { archiveNote, createNewNote, pinNote, updateNote } from '../actions/notes';

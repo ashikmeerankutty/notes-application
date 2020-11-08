@@ -1,5 +1,16 @@
 # Notes Application
 
+## Features
+
+- [x] Notes persist on page refresh
+- [x] Search is global and persist on page refresh.
+- [x] Search shows notes in different sections - notes & archived.
+- [x] Display area have a dedicated section for pinned and other notes
+- [x] Theme switch option to enable/disable dark mode.
+- [x] Markdown support in notes.
+- [x] Responsive UI.
+- [x] Pagination
+
 ## Install dependencies
 ```bash
 npm install
@@ -42,3 +53,4 @@ npm run test:watch
 ```bash
 npm run lint
 ```
+

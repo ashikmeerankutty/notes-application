@@ -4,7 +4,7 @@ import React, { ReactNode, useState } from 'react';
 import { Global, css } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
 import { useLoading } from './shared/utils/loadingStates';
-import { lightTheme, darkTheme, Toast } from 'components';
+import { lightTheme, darkTheme, Toast, Spinner } from 'components';
 import { getBrowserTheme, THEMES } from './shared/utils/theme';
 import { Theme, ToastManager } from 'components';
 import { Navbar, Sidebar } from './common';
@@ -51,12 +51,12 @@ interface MiddlewareProps {
 
 const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
-  const [mode, setMode] = useState(!getBrowserTheme());
+  const [mode, setMode] = useState(getBrowserTheme());
   const [searchText, setSearchText] = useState('');
   const loading = useLoading([]);
   const toasts = useSelector((state: State) => state.globals.toastStates);
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner size={40} />;
   }
 
   const theme = mode === THEMES.light ? lightTheme : darkTheme;

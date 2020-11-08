@@ -2,7 +2,6 @@ import { Note } from '../../shared/db/types';
 import {
   CREATE_NOTE,
   DELETE_NOTE,
-  LOAD_NOTES,
   UNARCHIVE_NOTE,
   UNPIN_NOTE,
   UPDATE_NOTE,
@@ -11,12 +10,10 @@ import {
   archiveNote,
   createNewNote,
   deleteNote,
-  loadNotes,
   pinNote,
   updateNote,
 } from '../notes';
 import * as notesDb from '../../shared/db/notes';
-import { clearStorage } from '../../shared/db/storage';
 
 describe('Note action', () => {
   const sampleNotes: Omit<Note, 'id'>[] = [
@@ -89,20 +86,6 @@ describe('Note action', () => {
     });
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith(newNote.id);
-  });
-
-  it('load notes', () => {
-    clearStorage();
-    const newNote = notesDb.createNewNote(
-      sampleNotes[0].title,
-      sampleNotes[0].notes
-    );
-    const spy = jest.spyOn(notesDb, 'getNotes');
-    expect(loadNotes()).toEqual({
-      type: LOAD_NOTES,
-      notes: [newNote],
-    });
-    expect(spy).toHaveBeenCalled();
   });
 
   it('archive a note', () => {
