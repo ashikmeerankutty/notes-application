@@ -67,6 +67,15 @@ const notes = (state = intialState, action: NoteAction) => {
       };
 
     case PIN_NOTE:
+      if (!state.notes.find((note) => note.id === action.note.id)) {
+        return {
+          ...state,
+          notes: state.notes.map((note) =>
+            note.id === action.note.id ? action.note : note
+          ),
+          pinnedNotes: [...state.pinnedNotes, action.note],
+        };
+      }
       return {
         ...state,
         notes: state.notes.filter((note) => note.id !== action.note.id),
@@ -74,10 +83,21 @@ const notes = (state = intialState, action: NoteAction) => {
       };
 
     case UNPIN_NOTE:
+      if (state.notes.find((note) => note.id === action.note.id)) {
+        return {
+          ...state,
+          notes: state.notes.map((note) =>
+            note.id === action.note.id ? action.note : note
+          ),
+          pinnedNotes: state.pinnedNotes.filter(
+            (note) => note.id !== action.note.id
+          ),
+        };
+      }
       return {
         ...state,
-        pinnedNotes: state.pinnedNotes.filter((note) => note.id !== action.note.id),
         notes: [...state.notes, action.note],
+        pinnedNotes: state.pinnedNotes.filter((note) => note.id !== action.note.id),
       };
 
     case ARCHIVE_NOTE:
@@ -86,6 +106,7 @@ const notes = (state = intialState, action: NoteAction) => {
         notes: state.notes.map((note) =>
           note.id === action.note.id ? action.note : note
         ),
+        pinnedNotes: state.pinnedNotes.filter((note) => note.id !== action.note.id),
         archivedNotes: [...state.archivedNotes, action.note],
       };
 

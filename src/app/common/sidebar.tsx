@@ -45,9 +45,8 @@ const navbarStyles = (expanded: boolean, theme: Theme) => css`
       width: 100%;
     }
     @media (max-width: 425px) {
-      &:hover {
-        width: ${expanded ? '100%' : '64px'};
-      }
+      overflow: hidden;
+      width: ${expanded ? '100%' : 0};
     }
   }
   @media (max-width: 425px) {

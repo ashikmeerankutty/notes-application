@@ -65,14 +65,17 @@ export const Navbar: React.FC<NavbarProps> = ({
   useEffect(() => {
     const searchQuery = window.location.hash.replace(/^#\/?|\/$/g, '').split('/');
     if (searchQuery[0] === 'search' && searchQuery[1] !== searchText) {
-      setSearchText(searchQuery[1]);
-      onSearchChange(searchQuery[1]);
+      setSearchText(decodeURI(searchQuery[1]));
+      onSearchChange(decodeURI(searchQuery[1]));
     }
   }, []);
 
   useEffect(() => {
     if (searchText) {
       delayedLoadNotes(searchText);
+    } else {
+      console.log("here")
+      dispatch(loadNotes('', 1, 10));
     }
   }, [searchText]);
 

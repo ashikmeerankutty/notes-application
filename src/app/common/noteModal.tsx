@@ -1,6 +1,6 @@
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { PinIcon, EyeOpenIcon, RefreshIcon, ArchiveIcon } from '@space-kit/icons';
+import { PinIcon, RefreshIcon, ArchiveIcon } from '@space-kit/icons';
 import { Modal, IconButton, Theme, Button } from 'components';
 import { useTheme } from 'emotion-theming';
 import { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from 'react';
@@ -111,7 +111,6 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
   const onNoteCreate = (note: Note) => {
     const updatedNote = { ...note, archived: archived, pinned: pinned };
     setUpdatedNote(updatedNote);
-    window.location.hash = `note/${updatedNote.id}`;
   };
 
   const onSave = (updatedTitle: string = '', updatedDescription: string = '') => {
@@ -140,13 +139,11 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
   };
 
   const onPinPressed = () => {
-    if (updateNote) {
+    if (updatedNote && updatedNote.id) {
       setPinned(!pinned);
-      if (updatedNote.id) {
-        dispatch(pinNote(updatedNote.id, pinned));
-        const pinnedMessage = !pinned ? 'Note pinned' : 'Note unpinned';
-        dispatch(showToast('success', pinnedMessage));
-      }
+      dispatch(pinNote(updatedNote.id, pinned));
+      const pinnedMessage = !pinned ? 'Note pinned' : 'Note unpinned';
+      dispatch(showToast('success', pinnedMessage));
     }
   };
 
