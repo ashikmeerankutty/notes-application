@@ -121,8 +121,8 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
       dispatch(
         updateNote(updatedNote.id, {
           ...updatedNote,
-          title: updatedTitle || title,
-          notes: updatedDescription || description,
+          title: updatedTitle,
+          notes: updatedDescription,
           pinned,
         })
       );
@@ -168,7 +168,7 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
           key="title"
           value={title}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            onSave(e.target.value, '');
+            onSave(e.target.value, description);
             setTitle(e.target.value);
           }}
           type="text"
@@ -187,7 +187,7 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
           key="note"
           value={description}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-            onSave('', e.target.value);
+            onSave(title, e.target.value);
             setDescription(e.target.value);
           }}
         />
