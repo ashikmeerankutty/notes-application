@@ -15,6 +15,7 @@ import {
 import * as notesDb from '../shared/db/notes';
 import { Note } from '../shared/db/types';
 import { Dispatch } from 'react';
+import { showToast } from './globals';
 
 export const createNewNote = (
   title: string,
@@ -43,6 +44,9 @@ export const loadNotes = (
   filterPinned?: boolean
 ) => (dispatch: Dispatch<any>) => {
   const notes = notesDb.getNotes(query, page, pageSize, filterPinned);
+  if (!notes.length) {
+    dispatch(showToast('error', 'No more notes to load'));
+  }
   return dispatch({ type: LOAD_NOTES, notes, page });
 };
 
