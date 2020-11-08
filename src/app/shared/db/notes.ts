@@ -18,7 +18,7 @@ export const getNotes = (
     notes = notes.filter(
       (note: Note) =>
         note.title.toLowerCase().includes(query.toLowerCase()) ||
-        note.notes.includes(query.toLowerCase())
+        note.notes.toLowerCase().includes(query.toLowerCase())
     );
   }
 

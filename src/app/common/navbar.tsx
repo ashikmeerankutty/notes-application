@@ -57,7 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const theme = useTheme<Theme>();
 
   const loadQueryNotes = (searchText: string) => {
-    dispatch(loadNotes(searchText, 1, 10, false));
+    dispatch(loadNotes(searchText, 1, null, false));
   };
 
   const delayedLoadNotes = useCallback(debounce(loadQueryNotes, 500), []);

@@ -59,9 +59,7 @@ describe('Notes reducers', () => {
         },
         deleteNoteAction
       )
-    ).toEqual({
-      notes: [],
-    });
+    ).toEqual({ ...initialState });
 
     const deleteNoteAction2: NoteAction = {
       type: DELETE_NOTE,
@@ -79,6 +77,7 @@ describe('Notes reducers', () => {
         deleteNoteAction2
       )
     ).toEqual({
+      ...initialState,
       notes: sampleNotes,
     });
   });
@@ -109,6 +108,7 @@ describe('Notes reducers', () => {
         updateNoteAction
       )
     ).toEqual({
+      ...initialState,
       notes: [updatedNote],
     });
   });
@@ -120,7 +120,9 @@ describe('Notes reducers', () => {
     };
 
     expect(notesReducer(initialState, loadNoteAction)).toEqual({
+      ...initialState,
       notes: sampleNotes,
+      lastLoadedPage: undefined,
     });
   });
 });
