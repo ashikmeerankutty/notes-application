@@ -51,7 +51,7 @@ interface MiddlewareProps {
 
 const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
-  const [mode, setMode] = useState(!getBrowserTheme());
+  const [mode, setMode] = useState(getBrowserTheme());
   const [searchText, setSearchText] = useState('');
   const loading = useLoading([]);
   const toasts = useSelector((state: State) => state.globals.toastStates);

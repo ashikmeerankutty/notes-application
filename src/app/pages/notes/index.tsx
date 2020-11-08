@@ -7,7 +7,7 @@ import { Note } from '../../shared/db/types';
 import ListNotes from '../../common/listNotes';
 import NewNote from '../../common/newNote';
 import { Button, Text } from 'components';
-import { loadNotes, loadPinnedNotes } from '../../actions/notes';
+import { clearNotes, loadNotes, loadPinnedNotes } from '../../actions/notes';
 import { EmptyBlock } from '../../shared/components/emptyBlock/emptyBlock';
 import NoteModal from '../../common/noteModal';
 
@@ -45,6 +45,7 @@ const NotePage: React.FC<NotePageProps> = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(clearNotes());
     dispatch(loadNotes(null, 1, 10, true));
     dispatch(loadPinnedNotes());
   }, []);

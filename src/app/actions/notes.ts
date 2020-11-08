@@ -47,13 +47,6 @@ export const loadNotes = (
 };
 
 export const loadSearchResults = (query?: string) => (dispatch: Dispatch<any>) => {
-  // console.log(query);
-  // if (query === '') {
-  //   console.log('Coming..');
-  //   const notes = notesDb.getNotes(query, 1, 10, true);
-  //   dispatch({ type: CLEAR_NOTES });
-  //   return dispatch({ type: LOAD_NOTES, notes, page: 1 });
-  // }
   const notes = notesDb.getNotes(query, 1, null, false);
   return dispatch({ type: LOAD_SEARCH_NOTES, notes });
 };
