@@ -29,6 +29,7 @@ const ArchivePage: React.FC = () => {
   const notes = useSelector((state: State) => state.notes.archivedNotes);
 
   useEffect(() => {
+    document.title = 'Noty | Archived';
     dispatch(loadArchivedNotes());
   }, []);
 
@@ -61,7 +62,7 @@ const ArchivePage: React.FC = () => {
   return (
     <div css={archivePageStyles}>
       <Text extraStyles={headingStyles} is="h4">
-        Archives
+        Archived
       </Text>
       <ListNotes notes={notes} onSelectNote={selectNote} key="list notes" />
       {selectedNote && <NoteModal note={selectedNote} onClose={deselectNote} />}

@@ -15,8 +15,8 @@ const listNotesWrapperStyles = css`
 
 interface ListNotesProps {
   notes: Note[];
-  onSelectNote: any;
-  search: boolean;
+  onSelectNote: (note: Note) => void;
+  search?: boolean;
 }
 
 const ListNotes: React.FC<ListNotesProps> = ({

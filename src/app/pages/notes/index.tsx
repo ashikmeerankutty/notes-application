@@ -45,6 +45,7 @@ const NotePage: React.FC<NotePageProps> = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    document.title = 'Noty | Notes';
     dispatch(clearNotes());
     dispatch(loadNotes(null, 1, 10, true));
     dispatch(loadPinnedNotes());
