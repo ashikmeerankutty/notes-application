@@ -10,6 +10,7 @@
 - [x] Markdown support in notes.
 - [x] Responsive UI.
 - [x] Pagination
+- [x] Auto save
 
 ## Install dependencies
 ```bash
