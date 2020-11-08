@@ -71,7 +71,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, []);
 
   useEffect(() => {
-    delayedLoadNotes(searchText);
+    if (searchText) {
+      delayedLoadNotes(searchText);
+    }
   }, [searchText]);
 
   const themeToggleButton = mode === THEMES.light ? LightbulbIcon : MoonIcon;

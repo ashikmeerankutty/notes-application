@@ -44,6 +44,7 @@ const notesToolbarStyles = css`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  align-items: center;
 `;
 
 const noteViewStyles = css`
@@ -51,10 +52,12 @@ const noteViewStyles = css`
   display: flex;
 `;
 
-const notePreviewStyles = css`
+const notePreviewStyles = (theme: Theme) => css`
   margin-top: 0;
   flex-grow: 1;
   flex-basis: 0;
+  border-left: 1px solid ${theme.colors.border};
+  padding-left: 10px;
 `;
 
 const refreshIconStyles = (spin: boolean) => css`
@@ -192,14 +195,13 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
           }}
         />
         {preview && (
-          <div css={notePreviewStyles}>
+          <div css={notePreviewStyles(theme)}>
             <Markdown text={description} />
           </div>
         )}
       </div>
       <div css={notesToolbarStyles}>
         <div>
-          <IconButton active={preview} onClick={onPreviewClick} Icon={EyeOpenIcon} />
           <IconButton active={pinned} onClick={onPinPressed} Icon={PinIcon} />
           <IconButton
             active={archived}
@@ -207,7 +209,9 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
             Icon={ArchiveIcon}
           />
         </div>
-        <Button onClick={onClose}>Close</Button>
+        <div>
+          <Button onClick={onPreviewClick}>Preview Markdown</Button>
+        </div>
       </div>
     </Modal>
   );
