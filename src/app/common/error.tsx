@@ -1,8 +1,7 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
 /**@jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React, { ErrorInfo, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
+import { colors } from '../shared/components/themes';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -15,7 +14,7 @@ interface ErrorBoundaryProps {
 }
 
 const errorStyles = css`
-  color: red;
+  color: ${colors.red200};
   font-size: 14px;
 `;
 
@@ -27,10 +26,6 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
   static getDerivedStateFromError() {
     return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.log(error, errorInfo);
   }
 
   render() {

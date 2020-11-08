@@ -11,6 +11,7 @@ import { Navbar, Sidebar } from './common';
 import { useSelector } from 'react-redux';
 import { State } from './reducers';
 import SearchPage from './pages/search';
+import ErrorBoundary from './common/error';
 
 const globalStyles = (theme: Theme) => css`
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
@@ -61,26 +62,28 @@ const Middleware: React.FC<MiddlewareProps> = ({ children }: MiddlewareProps) =>
   const theme = mode === THEMES.light ? lightTheme : darkTheme;
 
   return (
-    <ThemeProvider theme={theme}>
-      <Global styles={globalStyles(theme)} />
-      <Navbar
-        toggleSidebar={() => setSidebarExpanded(!sidebarExpanded)}
-        setTheme={() => setMode(!mode)}
-        onSearchChange={(searchText: string) => setSearchText(searchText)}
-        mode={mode}
-      ></Navbar>
-      <div role="main" css={containerStyles}>
-        <Sidebar expanded={sidebarExpanded} />
-        {searchText ? <SearchPage /> : children}
-      </div>
-      <ToastManager>
-        {toasts.map((toast) => (
-          <Toast key={toast.id} type={toast.state}>
-            {toast.message}
-          </Toast>
-        ))}
-      </ToastManager>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <Global styles={globalStyles(theme)} />
+        <Navbar
+          toggleSidebar={() => setSidebarExpanded(!sidebarExpanded)}
+          setTheme={() => setMode(!mode)}
+          onSearchChange={(searchText: string) => setSearchText(searchText)}
+          mode={mode}
+        ></Navbar>
+        <div role="main" css={containerStyles}>
+          <Sidebar expanded={sidebarExpanded} />
+          {searchText ? <SearchPage /> : children}
+        </div>
+        <ToastManager>
+          {toasts.map((toast) => (
+            <Toast key={toast.id} type={toast.state}>
+              {toast.message}
+            </Toast>
+          ))}
+        </ToastManager>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 
