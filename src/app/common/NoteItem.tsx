@@ -8,11 +8,12 @@ import { useDispatch } from 'react-redux';
 import { showToast } from '../actions/globals';
 import { deleteNote, archiveNote, pinNote } from '../actions/notes';
 import { Note } from '../shared/db/types';
+import ErrorBoundary from './error';
 import Markdown from './markdown';
 
 const noteItemStyles = (theme: Theme, showMenu: boolean) => css`
   position: relative;
-  min-width: 250px;
+  width: 250px;
   height: 120px;
   margin: 10px 10px 10px 0px;
   padding: 10px;
@@ -90,7 +91,14 @@ const NoteItem: React.FC<NoteItemProps> = ({
       </div>
       <div css={noteDetailStyles} onClick={onSelect}>
         {note.title && <h4>{note.title}</h4>}
-        {note.notes && <Markdown text={note.notes}></Markdown>}
+        {note.notes && (
+          <ErrorBoundary
+            message="Error rendering markdown"
+            detailMessage="Some error occured while rendering markdown. Please check your markdown for any errors"
+          >
+            <Markdown text={note.notes}></Markdown>
+          </ErrorBoundary>
+        )}
       </div>
       <div className="noteItemStyles__toolbar">
         <Popover

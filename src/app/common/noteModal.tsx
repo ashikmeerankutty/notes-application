@@ -3,11 +3,19 @@ import { css, jsx } from '@emotion/core';
 import { PinIcon, RefreshIcon, ArchiveIcon } from '@space-kit/icons';
 import { Modal, IconButton, Theme, Button } from 'components';
 import { useTheme } from 'emotion-theming';
-import { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { showToast } from '../actions/globals';
 import { archiveNote, createNewNote, pinNote, updateNote } from '../actions/notes';
 import { Note } from '../shared/db/types';
+import ErrorBoundary from './error';
 import Markdown from './markdown';
 
 interface NoteModalProps {
@@ -166,7 +174,7 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
           css={noteInputStyle(theme)}
           aria-label="note title"
           key="title"
-          value={title}
+          defaultValue={title}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             onSave(e.target.value, description);
             setTitle(e.target.value);
@@ -185,7 +193,7 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
           aria-label="note"
           placeholder="Take a note.."
           key="note"
-          value={description}
+          defaultValue={description}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
             onSave(title, e.target.value);
             setDescription(e.target.value);
@@ -193,7 +201,12 @@ const NoteModal: FunctionComponent<NoteModalProps> = ({
         />
         {preview && (
           <div css={notePreviewStyles(theme)}>
-            <Markdown text={description} />
+            <ErrorBoundary
+              message="Error rendering markdown"
+              detailMessage="Some error occured while rendering markdown. Please check your markdown for any errors"
+            >
+              <Markdown text={description} />
+            </ErrorBoundary>
           </div>
         )}
       </div>

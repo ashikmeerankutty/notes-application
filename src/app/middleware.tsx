@@ -35,6 +35,7 @@ const globalStyles = (theme: Theme) => css`
   p {
     padding: 0;
     margin: 0;
+    word-wrap: break-word;
   }
 `;
 

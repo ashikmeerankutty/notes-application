@@ -21,6 +21,8 @@ interface MarkdownProps {
 
 const markdownStyles = (theme: Theme) => css`
   color: ${theme.colors.text};
+  max-width: 200px;
+  overflow: hidden;
 `;
 
 const processor = unified()
